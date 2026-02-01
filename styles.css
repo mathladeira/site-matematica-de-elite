@@ -246,7 +246,7 @@ footer small {
       transparent 25%,
       rgb(var(--graphite-rgb)/0.30) 35%,
       rgb(var(--black-rgb)/0.80) 100%);
-  border-bottom: 1px solid rgb(var(--white-rgb) / 0.10)
+  border-bottom: 1px solid rgb(var(--white-rgb) / 0.10);
 }
 .pagina-mentoria main {
   padding-top: 0;
