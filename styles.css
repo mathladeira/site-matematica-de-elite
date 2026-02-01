@@ -1,0 +1,426 @@
+/* VARIÁVEIS DE COR */
+:root {
+  --black-rgb: 0 0 0;
+  --graphite-rgb: 46 46 46;
+  --grey-rgb: 181 181 181;
+  --white-rgb: 255 255 255;
+  --blue-rgb: 58 111 168;
+  --darkblue-rgb: 0 30 56;
+}
+
+* { box-sizing: border-box; }
+
+/* FORMATAÇÃO DO CORPO DO SITE */
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  line-height: 1.5;
+  background-color: transparent;
+  color: rgb(var(--white-rgb));
+}
+/* GRADIENTE DE FUNDO */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(
+      1200px 600px at 50% -200px,
+      rgb(var(--darkblue-rgb) / 0.15),
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgb(var(--darkblue-rgb) / 0.95),
+      rgb(var(--black-rgb))
+    );
+}
+
+/* FORMATAÇÃO DOS CONTAINERS */
+.container {
+  width: min(100% - 32px, 1100px);
+  margin-inline: auto;
+}
+
+/* FORMATAÇÃO DO CABEÇALHO */
+header {
+  padding: 16px 0;
+  background-color: rgb(var(--graphite-rgb)/0.7);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 8px 30px rgb(var(--black-rgb) / 0.35);
+}
+
+/* FORMATAÇÃO DA SEÇÃO MAIN */
+main {
+  flex: 1;
+  padding: 32px 0;
+}
+
+/* FORMATAÇÃO DOS TÍTULOS H1 */
+h1 {
+  margin-top: 0;
+  font-size: 2rem;
+}
+
+/* FORMATAÇÃO DOS PARÁGRAFOS PADRÃO */
+p {
+  color: rgb(var(--grey-rgb));
+}
+
+/* FORMATAÇÃO DO CABEÇALHO */
+/* Formata os elementos do cabeçalho */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+/* FORMATA A MOLDURA DO LOGOTIPO */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+/* FORMATA A IMAGEM DO LOGOTIPO */
+.brand img {
+  height: 36px;
+  width: auto;
+  display: block;
+}
+/* FORMATA OS ÍCONES DE REDES SOCIAIS ENTRE SI */
+.social {
+  display: flex;
+  gap: 16px;
+}
+/* FORMATA AS IMAGENS DOS LINKS */
+.social img {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+/* FORMATA A ESTILIZAÇÃO DOS LINKS DOS ÍCONES */
+.social a {
+  text-decoration: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(var(--grey-rgb)/0.2);
+  border: 1px solid rgb(var(--white-rgb)/0.25);
+  color: rgb(var(--grey-rgb));
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.social a:hover{
+  background-color: rgb(var(--white-rgb)/0.18);
+}
+.social a:focus-visible{
+  outline: 2px solid rgb(var(--blue-rgb));
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
+/* FORMATAÇÃO DO RODAPÉ */
+/* FORMATA A SEÇÃO DO RODAPÉ */
+footer {
+  background-color: rgb(var(--graphite-rgb)/0.7);
+  padding: 20px 0;
+}
+/* FORMATA O CONTEÚDO DO RODAPÉ */
+.footer-content {
+  text-align: center;
+}
+/* FORMATA O CONTEÚDO TEXTUAL */
+footer small {
+  color: rgb(var(--grey-rgb));
+  font-size: 0.85rem;
+}
+
+/* FORMATAÇÃO DA SEÇÃO DE PRODUTOS */
+.products {
+  padding: 24px 0 56px;
+}
+.section-title {
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+}
+.section-subtitle {
+  margin: 0 0 18px;
+  color: rgb(var(--grey-rgb));
+}
+/* FORMATAÇÃO DO GRID RESPONSIVO */
+.product-grid {
+  display: grid;
+  grid-template-columns: auto;
+  gap: 16px;
+}
+/* FORMATAÇÃO DOS CARDS */
+.product-card {
+  background: linear-gradient(
+    180deg,
+    rgb(var(--graphite-rgb)/0.95),
+    rgb(var(--black-rgb)/0.95));
+  border: 1px solid rgb(var(--white-rgb)/0.10);
+  border-radius: 20px;
+  padding: 15px;
+  box-shadow: 0 18px 50px rgb(var(--black-rgb)/0.45);
+}
+/* FORMATAÇÃO DOS TEXTOS DO CARD */
+.product-title {
+  margin: 0 0 10px;
+  font-size: 1.15rem;
+}
+.product-desc {
+  margin: 0 0 14px;
+  color: rgb(var(--grey-rgb));
+}
+/* BARRINHA AZUL */
+.product-note {
+  margin: 0 0 18px;
+  padding-left: 12px;
+  border-left: 3px solid rgb(var(--blue-rgb));
+  color: rgb(var(--white-rgb)/0.8);
+}
+/* FORMATAÇÃO DOS BOTÕES */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 46px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  border: 2px solid transparent;
+  transition: transform 0.15s ease, background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn-primary {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--blue-rgb)/0.55),
+    rgb(var(--darkblue-rgb)/0.85));
+  color: rgb(var(--white-rgb));
+  border-color: rgb(var(--blue-rgb));
+}
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+.btn-ghost {
+  background: rgb(var(--white-rgb)/0.1);
+  border-color: rgb(var(--white-rgb)/0.2);
+  color: rgb(var(--white-rgb));
+}
+.btn-ghost:hover {
+  border-color: rgb(var(--blue-rgb));
+  background: rgb(var(--white-rgb)/0.10);
+}
+.btn:focus-visible{
+  outline: 2px solid rgb(var(--blue-rgb)/0.55);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+/* FORMATA A DIV MENTORIA-HERO */
+.mentoria-hero {
+  padding: 24px 0 56px;
+  margin-bottom: 24px;
+  background:
+    radial-gradient(
+      900px 380px at 50% 120px,
+      rgb(var(--blue-rgb) / 0.25),
+      transparent 60%),
+    linear-gradient(
+      180deg,
+      transparent 0%,
+      transparent 25%,
+      rgb(var(--graphite-rgb)/0.30) 35%,
+      rgb(var(--black-rgb)/0.80) 100%);
+  border-bottom: 1px solid rgb(var(--white-rgb) / 0.10)
+}
+.pagina-mentoria main {
+  padding-top: 0;
+  padding-bottom: 32px;
+}
+.pagina-mentoria .mentoria-hero {
+  padding-top: 56px;
+}
+.mentoria-hero h1 {
+  font-size: clamp(2.2rem, 4vw, 3.1rem);
+  line-height: 1.12;
+  max-width: 24ch;
+  margin-bottom: 14px;
+}
+.hero-subtitle {
+  margin: 0;
+  max-width: 56ch;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: rgb(var(--white-rgb) / 0.82);
+}
+.hero-actions {
+  margin-top: 26px;
+  display: grid;
+  gap: 12px;
+  max-width: 360px;
+}
+.hero-actions .btn {
+  width: 100%;
+}
+.hero-ghost {
+  height: 42px;
+  font-weight: 650;
+}
+
+/* FORMATAÇÃO DA LISTA DA PÁGINA MENTORIA */
+ul {
+  margin: 16px 0 24px;
+  padding-left: 0;
+  list-style: none;
+}
+main ul {
+  max-width: 60ch;
+}
+li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 12px;
+  color: rgb(var(--white-rgb)/0.80);
+  line-height: 1.6;
+}
+li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 10px;
+  height: 2px;
+  background-color: rgb(var(--blue-rgb)/0.65);
+  border-radius: 2px;
+}
+
+/* FORMATAÇÃO DA SEÇÃO FAQ */
+.faq {
+  padding: 32px 0 64px;
+}
+.faq-title {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+.faq-subtitle {
+  margin: 0 0 18px;
+  color: rgb(var(--grey-rgb));
+  max-width: 42ch;
+}
+.faq-list {
+  display: grid;
+  gap: 14px;
+}
+.faq-item {
+  background: rgb(var(--graphite-rgb)/0.65);
+  border: 1px solid rgb(var(--white-rgb)/0.10);
+  border-radius: 18px;
+  overflow: hidden;
+}
+/* TIRA O MARKER PADRÃO DO SUMMARY */
+.faq-item summary {
+  list-style: none;
+}
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+.faq-question {
+  cursor: pointer;
+  padding: 18px 18px;
+  font-weight: 750;
+  color: rgb(var(--white-rgb));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* SETINHA (TRIÂNGULO) */
+.faq-question::before {
+  content: "▼";
+  font-size: 0.9rem;
+  opacity: 0.85;
+  transform: rotate(-90deg);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+/* QUANDO ABRE, A SETINHA GIRA PRA BAIXO */
+.faq-item[open] .faq-question::before {
+  transform: rotate(0deg);
+  opacity: 1;
+}
+.faq-answer {
+  padding: 0 18px 18px 18px;
+}
+.faq-answer p {
+  margin: 0;
+  color: rgb(var(--white-rgb)/0.75);
+  line-height: 1.6;
+}
+/* HOVER/FOCO DISCRETO */
+.faq-question:hover {
+  color: rgb(var(--white-rgb)/0.95);
+}
+.faq-question:focus-visible {
+  outline: 2px solid rgb(var(--black-rgb)/0.55);
+  outline-offset: 3px;
+  border-radius: 14px;
+}
+
+/* FORMATA A SEÇÃO CALL TO ACTION */
+/* FORMATA O BLOCO DO CTA */
+.cta-section {
+  padding: 56px 0 72px;
+}
+.cta-title {
+  margin: 0 0 14px;
+  font-size: 1.8rem;
+}
+.cta-text {
+  margin: 0 0 28px;
+  color: rgb(var(--grey-rgb));
+  max-width: 48ch;
+}
+/* BOTÃO CONVERSAR SOBRE A MENTORIA */
+.cta-actions {
+  display: grid;
+  gap: 15px;
+  max-width: 520px;
+  margin-inline: auto;
+  margin-top: 24px;
+}
+/* BOTÃO OUTROS PRODUTOS */
+.cta-actions .btn.btn-secondary {
+  width: fit-content;
+  min-width: 220px;
+  height: 40px;
+  padding-inline: 22px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  justify-self: center;
+}
+
+/* FORMATA A RESPONSIVIDADE DO SITE */
+@media (min-width: 720px) {
+  .product-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+/*.mentoria-hero { outline: 3px solid red; }
