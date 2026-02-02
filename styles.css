@@ -282,6 +282,14 @@ footer small {
   font-weight: 650;
 }
 
+/* FORMATA O PARÁGRAFO DESTAQUE */
+.texto-destaque{
+  margin: 40px 0;
+  padding: 24px 0;
+  border-top: 1px solid rgb(var(--blue-rgb));
+  border-bottom: 1px solid rgb(var(--blue-rgb));
+}
+
 /* FORMATAÇÃO DA LISTA DA PÁGINA MENTORIA */
 ul {
   margin: 16px 0 24px;
@@ -424,3 +432,35 @@ li::before {
   }
 }
 /*.mentoria-hero { outline: 3px solid red; }
+
+/* CANCELA FORMATAÇÃO DA HOTMART */
+.btn.hotmart-fb,
+.btn.hotmart__button-checkout {
+  all: unset;
+  display: inline-flex;
+}
+.btn.btn-primary.hotmart-fb,
+.btn.btn-primary.hotmart__button-checkout {
+  all: unset;
+  display: inline-flex;
+  height: 46px;
+  padding: 0 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+  color: rgb(var(--white-rgb));
+  cursor: pointer;
+  background: linear-gradient(
+    180deg,
+    rgb(var(--blue-rgb) / 0.95),
+    rgb(var(--blue-rgb) / 0.75)
+  );
+  border: 1px solid rgb(var(--blue-rgb) / 0.65);
+  box-shadow:
+    0 10px 28px rgb(var(--black-rgb) / 0.45),
+    inset 0 1px 0 rgb(var(--white-rgb) / 0.25);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
