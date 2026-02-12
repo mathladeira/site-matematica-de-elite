@@ -68,6 +68,9 @@
     // 🔧 Ajuste aqui se mudar o backend
     const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
 
+    let tries = 0;
+    let timer = null;
+
     const $statusTitle = document.getElementById("statusTitle");
     const $statusText  = document.getElementById("statusText");
     const $downloadBtn = document.getElementById("downloadBtn");
@@ -127,9 +130,6 @@
       $retryBtn.style.display = "inline-flex";
       $retryBtn.onclick = (e) => { e.preventDefault(); startPolling(true); };
     }
-
-    let tries = 0;
-    let timer = null;
 
     function startPolling(reset=false) {
       if (reset) { tries = 0; }
