@@ -214,6 +214,12 @@ footer small {
   color: rgb(var(--white-rgb));
   border-color: rgb(var(--blue-rgb));
 }
+button.btn {
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+}
 .btn-primary:hover {
   filter: brightness(1.05);
 }
@@ -272,6 +278,8 @@ footer small {
 .hero-actions {
   margin-top: 26px;
   margin-bottom: 26px;
+  margin-left: auto;
+  margin-right: auto;
   display: grid;
   gap: 12px;
   max-width: 360px;
@@ -428,7 +436,7 @@ li::before {
   overflow: hidden;
   margin: 24px 0;
   border-radius: 12px;
-  max-width: 380px;
+  max-width: 300px;
   margin: 20px auto;
 }
 .carousel-track {
