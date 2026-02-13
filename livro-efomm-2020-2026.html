@@ -140,7 +140,18 @@
         }
         // Se o backend retornou uma URL de pagamento, redireciona
         if (data.pay_url) {
-          window.open(data.pay_url, '_blank');
+          // Cria um link invisível
+          const link = document.createElement('a');
+          link.href = data.pay_url;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          link.style.display = 'none'; // Esconde o link
+          // Adiciona ao corpo da página
+          document.body.appendChild(link);
+          // Dispara um clique programático
+          link.click();
+          // Remove o link após o clique
+          document.body.removeChild(link);
         } else {
           alert('URL de pagamento não encontrada');
         }
