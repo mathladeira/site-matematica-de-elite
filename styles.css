@@ -437,9 +437,10 @@ li::before {
 }
 .carousel img {
   width: 100%;
+  height: auto;
   flex-shrink: 0;
   border-radius: 12px;
-  object-fit: fill;
+  object-fit: cover;
 }
 .carousel-btn {
   position: absolute;
