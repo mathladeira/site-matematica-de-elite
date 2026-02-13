@@ -428,6 +428,8 @@ li::before {
   overflow: hidden;
   margin: 24px 0;
   border-radius: 12px;
+  max-width: 380px;
+  margin: 20px auto;
 }
 .carousel-track {
   display: flex;
@@ -437,7 +439,8 @@ li::before {
   width: 100%;
   flex-shrink: 0;
   border-radius: 12px;
-  object-fit: contain;
+  object-fit: cover;
+  height: 480px;
 }
 .carousel-btn {
   position: absolute;
