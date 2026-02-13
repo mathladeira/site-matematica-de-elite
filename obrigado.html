@@ -6,11 +6,10 @@
   <meta name="description" content="Confirmação de pagamento - Matemática de Elite" />
   <title>Pagamento | Matemática de Elite</title>
   <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="assets" href="assets/favicom_site.svg">
+  <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
 </head>
 
 <body>
-  <!-- CABEÇALHO (igual ao index) -->
   <header>
     <div class="container header-content">
       <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
@@ -24,7 +23,7 @@
 
   <main>
     <div class="container">
-      <h1>Quase lá 🙂</h1>
+      <h1>Quase lá...</h1>
       <p id="subtitle">Estamos confirmando seu pagamento com segurança.</p>
 
       <section class="products" aria-label="Status do pagamento">
@@ -34,17 +33,12 @@
             <p class="product-desc" id="statusText">
               Se você acabou de pagar, isso pode levar alguns segundos.
             </p>
-
             <p class="product-note" id="sidBox" style="display:none;"></p>
-
+            <!-- BOTÃO BAIXAR MEU LIVRO -->
             <a class="btn btn-primary" id="downloadBtn" href="#" style="display:none;" rel="noopener noreferrer">
               Baixar meu livro
             </a>
-
-            <a class="btn btn-ghost" id="retryBtn" href="#" style="display:none;">
-              Tentar novamente
-            </a>
-
+            <!-- BOTÃO VOLTAR SO SITE -->
             <a class="btn btn-ghost" id="backBtn" href="index.html" style="margin-top:12px;">
               Voltar ao site
             </a>
@@ -54,32 +48,24 @@
     </div>
   </main>
 
-  <!-- RODAPÉ (igual ao index) -->
   <footer>
     <div class="container footer-content">
       <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
     </div>
   </footer>
-
+  <!-- SCRIPT QUE CHAMA O BACKEND -->
   <script>
-    // Ano automático
     document.getElementById("year").textContent = new Date().getFullYear();
-
-    // 🔧 Ajuste aqui se mudar o backend
     const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
-
     let tries = 0;
     let timer = null;
-
     const $statusTitle = document.getElementById("statusTitle");
     const $statusText  = document.getElementById("statusText");
     const $downloadBtn = document.getElementById("downloadBtn");
     const $retryBtn    = document.getElementById("retryBtn");
     const $sidBox      = document.getElementById("sidBox");
-
     const params = new URLSearchParams(window.location.search);
     const sid = params.get("sid");
-
     if (!sid) {
       $statusTitle.textContent = "Ops… faltou o código do pedido 😅";
       $statusText.textContent = "Volte para o site e tente novamente. Se precisar, me chame no WhatsApp.";
@@ -90,24 +76,17 @@
       $sidBox.textContent = `Código do pedido: ${sid}`;
       startPolling();
     }
-
     async function checkPaymentOnce() {
       const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
-
       const res = await fetch(url, {
         method: "GET",
         headers: { "Accept": "application/json" }
       });
-
-      // Se der CORS, o navegador nem deixa ler isso.
-      // Se der 500/401 etc, cai aqui:
       if (!res.ok) {
         throw new Error(`HTTP ${res.status}`);
       }
-
       return await res.json();
     }
-
     function showPaid(downloadUrl) {
       $statusTitle.textContent = "Pagamento confirmado ✅";
       $statusText.textContent = "Seu download está liberado. Se quiser baixar depois, salve este link.";
@@ -115,14 +94,12 @@
       $downloadBtn.style.display = "inline-flex";
       $retryBtn.style.display = "none";
     }
-
     function showWaiting() {
       $statusTitle.textContent = "Confirmando…";
       $statusText.textContent = "Aguarde alguns segundos. Estamos consultando o status do pagamento.";
       $downloadBtn.style.display = "none";
       $retryBtn.style.display = "none";
     }
-
     function showError(message) {
       $statusTitle.textContent = "Não consegui confirmar agora 😬";
       $statusText.textContent = message;
@@ -130,7 +107,6 @@
       $retryBtn.style.display = "inline-flex";
       $retryBtn.onclick = (e) => { e.preventDefault(); startPolling(true); };
     }
-
     function startPolling(reset=false) {
       if (reset) { tries = 0; }
       if (timer) { clearTimeout(timer); }
@@ -138,29 +114,21 @@
       showWaiting();
       poll();
     }
-
     async function poll() {
       tries += 1;
-
       try {
         const data = await checkPaymentOnce();
-
         if (data && data.paid && data.download_url) {
           showPaid(data.download_url);
           return;
         }
-
-        // Ainda não pagou (ou ainda não confirmou)
         showWaiting();
-
-        // tenta por ~60s (24 tentativas * 2.5s)
         if (tries < 24) {
           timer = setTimeout(poll, 2500);
         } else {
           showError("Se você já pagou, clique em “Tentar novamente”. Se continuar, me chame no WhatsApp.");
         }
       } catch (err) {
-        // Aqui cai erro de CORS (bloqueio do navegador) ou erro do backend
         showError("Pode ser um bloqueio de segurança do navegador (CORS) ou instabilidade. Clique em “Tentar novamente”.");
         console.error(err);
       }
