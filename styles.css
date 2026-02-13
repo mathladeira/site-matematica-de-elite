@@ -440,7 +440,6 @@ li::before {
   flex-shrink: 0;
   border-radius: 12px;
   object-fit: cover;
-  height: 480px;
 }
 .carousel-btn {
   position: absolute;
