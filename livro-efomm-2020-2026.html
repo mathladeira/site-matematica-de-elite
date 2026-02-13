@@ -60,7 +60,7 @@
         </script>
         <!-- BOTÕES COMPRAR/VER AMOSTRA GRÁTIS -->
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#comprar" rel="noopener noreferrer">Comprar (em breve)</a>
+          <button class="btn btn-primary btn-comprar-pago" data-ebook-id="efomm_2020_2026">Comprar</button>
           <a class="btn btn-ghost" href="#amostra" rel="noopener noreferrer">Ver amostra grátis</a>
         </div>
       </div>
@@ -96,7 +96,7 @@
         <h2 class="section-title">Comprar</h2>
         <p class="muted">Quando seu checkout estiver pronto, é só trocar o href do botão abaixo pela URL final.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary is-disabled" href="#" aria-disabled="true">Checkout em construção</a>
+          <button class="btn btn-primary btn-comprar-pago" data-ebook-id="efomm_2020_2026">Comprar</button>
           <a class="btn btn-ghost" href="https://wa.me/5591982218946?text=Oi!%20Quero%20comprar%20o%20livro%20EFOMM%202020%E2%80%932026.%20Pode%20me%20avisar%20quando%20o%20checkout%20estiver%20pronto%3F" target="_blank" rel="noopener noreferrer">
             Me avise no WhatsApp
           </a>
@@ -110,10 +110,51 @@
       <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
     </div>
   </footer>
-
+  <!-- SCRIPT QUE ATUALIZA O ANO AUTOMATICAMENTE -->
   <script>
     const yearSpan = document.getElementById("year");
     yearSpan.textContent = new Date().getFullYear();
   </script>
+  <!-- SCRIPT QUE CHAMA O BACKEND -->
+   <script>
+  // URL do seu backend (a mesma usada no link da amostra grátis)
+  const BACKEND_URL = 'https://sitebackend-wandering-flower-7897.fly.dev';
+  // Seleciona todos os botões de compra (classe btn-comprar-pago)
+  const botoesCompra = document.querySelectorAll('.btn-comprar-pago');
+  botoesCompra.forEach(botao => {
+    botao.addEventListener('click', async function() {
+      // Pega o ebook-id do atributo data
+      const ebookId = this.dataset.ebookId;
+      // Desabilita o botão para evitar cliques duplicados
+      this.disabled = true;
+      this.textContent = 'Processando...';
+      try {
+        // Faz a requisição para o backend
+        const response = await fetch(`${BACKEND_URL}/pay/checkout?ebook_id=${ebookId}`);
+        // Converte a resposta para JSON
+        const data = await response.json();
+        if (!response.ok) {
+          // Se a resposta não foi bem-sucedida, mostra o erro
+          alert('Erro: ' + (data.error || 'Falha ao criar checkout'));
+          return;
+        }
+        // Se o backend retornou uma URL de pagamento, redireciona
+        if (data.pay_url) {
+          window.location.href = data.pay_url;
+        } else {
+          alert('URL de pagamento não encontrada');
+        }
+      } catch (error) {
+        // Em caso de erro de rede ou outro
+        console.error('Erro na requisição:', error);
+        alert('Erro de conexão. Tente novamente.');
+      } finally {
+        // Reabilita o botão caso não tenha redirecionado
+        this.disabled = false;
+        this.textContent = 'Comprar';
+      }
+    });
+  });
+</script>
 </body>
 </html>
