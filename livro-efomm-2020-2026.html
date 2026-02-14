@@ -1,179 +1,181 @@
 <!doctype html>
 <html lang="pt-br">
+<!-- CONFIGURAÇÃO DO SITE -->
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Livro EFOMM 2020–2026 resolvidas: questões comentadas passo a passo, com amostra grátis." />
-  <title>EFOMM 2020–2026 Resolvidas | Matemática de Elite</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Livro EFOMM 2020–2026 resolvidas: questões comentadas passo a passo, com amostra grátis." />
+    <title>EFOMM 2020-2026 Resolvidas | Matemática de Elite</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
 </head>
-
+<!-- CORPO DO SITE -->
 <body>
-  <header>
-    <div class="container header-content">
-      <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
-      <nav class="social">
-        <a href="https://www.youtube.com/@matematica_elite" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
-        <a href="https://www.instagram.com/matematicaelite/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
-        <a href="https://wa.me/5591982218946" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icone_whatsapp.svg" alt="WhatsApp"></a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <div class="container">
-      <div class="page-hero">
-        <h1>Provas da EFOMM 2020-2026 resolvidas</h1>
-        <p>Um livro para estudar por questões com clareza: interpretação, estratégia e resolução completa, sem pular etapas.</p>
-        <!-- CARROSSEL DE IMAGENS DO LIVRO -->
-        <div class="carousel">
-          <div class="carousel-track">
-            <img src="imagens_livro_efomm/img_1.png" alt="Capa do livro">
-            <img src="imagens_livro_efomm/img_2.png" alt="Sumário do livro">
-            <img src="imagens_livro_efomm/img_3.png" alt="Exemplo de resolução comentada 1">
-            <img src="imagens_livro_efomm/img_4.png" alt="Exemplo de resolução comentada 2">
-            <img src="imagens_livro_efomm/img_5.png" alt="Exemplo de resolução comentada 3">
-          </div>
-          <button class="carousel-btn prev">&#10094;</button>
-          <button class="carousel-btn next">&#10095;</button>
+    <!-- CABEÇALHO DO SITE -->
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
+            <nav class="social">
+                <a href="https://www.youtube.com/@matematica_elite" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
+                <a href="https://www.instagram.com/matematicaelite/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
+                <a href="https://wa.me/5591982218946" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icone_whatsapp.svg" alt="WhatsApp"></a>
+            </nav>
         </div>
-        <!-- SCRIPT DE ALTERNÂNCIA DE IMAGENS -->
-         <script>
-          const track = document.querySelector('.carousel-track');
-          const slides = Array.from(track.children);
-          const nextBtn = document.querySelector('.carousel-btn.next');
-          const prevBtn = document.querySelector('.carousel-btn.prev');
-          let currentIndex = 0;
-          function updateCarousel() {
-            const slideWidth = slides[0].getBoundingClientRect().width;
-            track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
-          }
-          nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % slides.length;
-            updateCarousel();
-          });
-          prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-            updateCarousel();
-          });
-          window.addEventListener('resize', updateCarousel);
-        </script>
-        <!-- BOTÕES COMPRAR/VER AMOSTRA GRÁTIS -->
-        <div class="hero-actions">
-          <button class="btn btn-primary btn-comprar-pago" data-ebook-id="efomm_2020_2026">Adquirir o livro completo</button>
-          <a class="btn btn-ghost" href="https://sitebackend-wandering-flower-7897.fly.dev/gratis" target="_blank" rel="noopener noreferrer">
-            Acessar amostra grátis
-          </a>
+    </header>
+    <!-- CONTEÚDO DO SITE -->
+    <main>
+        <div class="container">
+            <div class="page-hero">
+                <h1>Provas da EFOMM 2020-2026 resolvidas</h1>
+                <p>Um livro para estudar por questões com clareza: interpretação, estratégia e resolução completa, sem pular etapas.</p>
+                <!-- CARROSSEL DE IMAGENS DO LIVRO -->
+                <div class="carousel">
+                    <div class="carousel-track">
+                        <img src="imagens_livro_efomm/img_1.png" alt="Capa do livro">
+                        <img src="imagens_livro_efomm/img_2.png" alt="Sumário do livro">
+                        <img src="imagens_livro_efomm/img_3.png" alt="Exemplo de resolução comentada 1">
+                        <img src="imagens_livro_efomm/img_4.png" alt="Exemplo de resolução comentada 2">
+                        <img src="imagens_livro_efomm/img_5.png" alt="Exemplo de resolução comentada 3">
+                    </div>
+                    <button class="carousel-btn prev">&#10094;</button>
+                    <button class="carousel-btn next">&#10095;</button>
+                </div>
+                <!-- SCRIPT DE ALTERNÂNCIA DE IMAGENS -->
+                <script>
+                const track = document.querySelector('.carousel-track');
+                const slides = Array.from(track.children);
+                const nextBtn = document.querySelector('.carousel-btn.next');
+                const prevBtn = document.querySelector('.carousel-btn.prev');
+                let currentIndex = 0;
+                function updateCarousel() {
+                    const slideWidth = slides[0].getBoundingClientRect().width;
+                    track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+                }
+                nextBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex + 1) % slides.length;
+                    updateCarousel();
+                });
+                prevBtn.addEventListener('click', () => {
+                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                    updateCarousel();
+                });
+                window.addEventListener('resize', updateCarousel);
+                </script>
+                <!-- BOTÕES COMPRAR/VER AMOSTRA GRÁTIS -->
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-comprar-pago" data-ebook-id="efomm_2020_2026">Adquirir o livro completo</button>
+                    <a class="btn btn-ghost" href="https://sitebackend-wandering-flower-7897.fly.dev/gratis" target="_blank" rel="noopener noreferrer">
+                        Acessar amostra grátis
+                    </a>
+                </div>
+            </div>
+            <!-- O QUE TEM DENTRO? -->
+            <div class="container">
+                <h2 class="section-title">O que tem dentro</h2>
+                    <ul>
+                        <li>Questões comentadas passo a passo (com didática de professor).</li>
+                        <li>Foco em método: como pensar e não só “decorar macete”.</li>
+                        <li>Organização para você revisar rápido nas vésperas da prova.</li>
+                        <li>Atualizações conforme novas provas forem saindo.</li>
+                    </ul>
+            </div>
+            <!-- AMOSTRA GRÁTIS -->
+            <div class="container">
+                <h2 class="section-title">Amostra grátis</h2>
+                <p class="section-subtitle">Antes de investir, confira exatamente o estilo do material com uma amostra grátis da prova de 2025.</p>
+                <div class="imagem-amostra">
+                    <img src="imagens_livro_efomm/img_6.png" alt="Capa da amostra grátis do livro">
+                </div>
+                <div class="product-grid">
+                    <article class="product-card">
+                        <h3 class="product-title">EFOMM 2025 resolvida e comentada</h3>
+                        <p class="product-desc">Uma amostra gratuita do livro, com o mesmo padrão de explicação do material completo.</p>
+                        <p class="product-note">
+                        Se você gostar do estilo, o livro completo vai encaixar perfeitamente.
+                        </p>
+                        <a class="btn btn-ghost" href="https://sitebackend-wandering-flower-7897.fly.dev/gratis" target="_blank" rel="noopener noreferrer">
+                            Acessar grátis
+                        </a>
+                    </article>
+                </div>
+            </div>
+            <!-- COMPRAR/MENTORIA -->
+            <div class="container">
+                <h2 class="section-title">Comprar</h2>
+                <p class="muted">Deseja adquirir o livro completo e turbinar a sua preparação com as 140 questões dos últimos 7 anos de prova resolvidas e comentadas? Clique no link abaixo e adquira o livro completo.</p>
+                <div class="hero-actions">
+                    <button class="btn btn-primary btn-comprar-pago" data-ebook-id="efomm_2020_2026">Adquirir o livro completo</button>
+                </div>
+                <!-- MENTORIA -->
+                <p class="muted">Deseja conhecer a minha mentoria individualizada de Cálculo específica para a prova da EFOMM? Clique no link abaixo e saiba mais.</p>
+                <a class="btn btn-ghost" href="mentoria.html" rel="noopener noreferrer">
+                    Quero conhecer a mentoria
+                </a>
+            </div>
         </div>
-      </div>
-      <!-- O QUE TEM DENTRO? -->
-      <div class="container">
-        <h2 class="section-title">O que tem dentro</h2>
-        <ul>
-          <li>Questões comentadas passo a passo (com didática de professor).</li>
-          <li>Foco em método: como pensar e não só “decorar macete”.</li>
-          <li>Organização para você revisar rápido nas vésperas da prova.</li>
-          <li>Atualizações conforme novas provas forem saindo.</li>
-        </ul>
-      </div>
-      <!-- AMOSTRA GRÁTIS -->
-      <div class="container">
-        <h2 class="section-title">Amostra grátis</h2>
-        <p class="section-subtitle">Antes de investir, confira exatamente o estilo do material com uma amostra grátis da prova de 2025.</p>
-        <div class="imagem-amostra">
-          <img src="imagens_livro_efomm/img_6.png" alt="Capa da amostra grátis do livro">
+    </main>
+    <!-- RODAPÉ DO SITE -->
+    <footer>
+        <div class="container footer-content">
+            <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
         </div>
-        <div class="product-grid">
-          <article class="product-card">
-            <h3 class="product-title">EFOMM 2025 resolvida e comentada</h3>
-            <p class="product-desc">Uma amostra gratuita do livro, com o mesmo padrão de explicação do material completo.</p>
-            <p class="product-note">
-              Se você gostar do estilo, o livro completo vai encaixar perfeitamente.
-            </p>
-            <a class="btn btn-ghost" href="https://sitebackend-wandering-flower-7897.fly.dev/gratis" target="_blank" rel="noopener noreferrer">
-              Acessar grátis
-            </a>
-          </article>
-        </div>
-      </div>
-      <!-- COMPRAR -->
-      <div class="container">
-        <h2 class="section-title">Comprar</h2>
-        <p class="muted">Deseja adquirir o livro completo e turbinar a sua preparação com as 140 questões dos últimos 7 anos de prova resolvidas e comentadas? Clique no link abaixo e adquira o livro completo.</p>
-        <div class="hero-actions">
-          <button class="btn btn-primary btn-comprar-pago" data-ebook-id="efomm_2020_2026">Adquirir o livro completo</button>
-        </div>
-		<!-- MENTORIA -->
-		<p class="muted">Deseja conhecer a minha mentoria individualizada de Cálculo específica para a prova da EFOMM? Clique no link abaixo e saiba mais.</p>
-		<a class="btn btn-ghost" href="mentoria.html" rel="noopener noreferrer">
-        	Quero conhecer a mentoria
-        </a>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    <div class="container footer-content">
-      <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
-    </div>
-  </footer>
-  <!-- SCRIPT QUE ATUALIZA O ANO AUTOMATICAMENTE -->
-  <script>
-    const yearSpan = document.getElementById("year");
-    yearSpan.textContent = new Date().getFullYear();
-  </script>
-  <!-- SCRIPT QUE CHAMA O BACKEND -->
-   <script>
-  // URL do seu backend (a mesma usada no link da amostra grátis)
-  const BACKEND_URL = 'https://sitebackend-wandering-flower-7897.fly.dev';
-  // Seleciona todos os botões de compra (classe btn-comprar-pago)
-  const botoesCompra = document.querySelectorAll('.btn-comprar-pago');
-  botoesCompra.forEach(botao => {
-    botao.addEventListener('click', async function() {
-      // Pega o ebook-id do atributo data
-      const ebookId = this.dataset.ebookId;
-      // Desabilita o botão para evitar cliques duplicados
-      this.disabled = true;
-      this.textContent = 'Processando...';
-      try {
-        // Faz a requisição para o backend
-        const response = await fetch(`${BACKEND_URL}/pay/checkout?ebook_id=${ebookId}`);
-        // Converte a resposta para JSON
-        const data = await response.json();
-        if (!response.ok) {
-          // Se a resposta não foi bem-sucedida, mostra o erro
-          alert('Erro: ' + (data.error || 'Falha ao criar checkout'));
-          return;
+    </footer>
+    <!-- SCRIPT QUE ATUALIZA O ANO AUTOMATICAMENTE -->
+    <script>
+        const yearSpan = document.getElementById("year");
+        yearSpan.textContent = new Date().getFullYear();
+    </script>
+    <!-- SCRIPT QUE CHAMA O BACKEND -->
+    <script>
+    // URL do seu backend (a mesma usada no link da amostra grátis)
+    const BACKEND_URL = 'https://sitebackend-wandering-flower-7897.fly.dev';
+    // Seleciona todos os botões de compra (classe btn-comprar-pago)
+    const botoesCompra = document.querySelectorAll('.btn-comprar-pago');
+    botoesCompra.forEach(botao => {
+        botao.addEventListener('click', async function() {
+        // Pega o ebook-id do atributo data
+        const ebookId = this.dataset.ebookId;
+        // Desabilita o botão para evitar cliques duplicados
+        this.disabled = true;
+        this.textContent = 'Processando...';
+        try {
+            // Faz a requisição para o backend
+            const response = await fetch(`${BACKEND_URL}/pay/checkout?ebook_id=${ebookId}`);
+            // Converte a resposta para JSON
+            const data = await response.json();
+            if (!response.ok) {
+            // Se a resposta não foi bem-sucedida, mostra o erro
+            alert('Erro: ' + (data.error || 'Falha ao criar checkout'));
+            return;
+            }
+            // Se o backend retornou uma URL de pagamento, redireciona
+            if (data.pay_url) {
+            // Cria um link invisível
+            const link = document.createElement('a');
+            link.href = data.pay_url;
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            link.style.display = 'none'; // Esconde o link
+            // Adiciona ao corpo da página
+            document.body.appendChild(link);
+            // Dispara um clique programático
+            link.click();
+            // Remove o link após o clique
+            document.body.removeChild(link);
+            } else {
+            alert('URL de pagamento não encontrada');
+            }
+        } catch (error) {
+            // Em caso de erro de rede ou outro
+            console.error('Erro na requisição:', error);
+            alert('Erro de conexão. Tente novamente.');
+        } finally {
+            // Reabilita o botão caso não tenha redirecionado
+            this.disabled = false;
+            this.textContent = 'Comprar';
         }
-        // Se o backend retornou uma URL de pagamento, redireciona
-        if (data.pay_url) {
-          // Cria um link invisível
-          const link = document.createElement('a');
-          link.href = data.pay_url;
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          link.style.display = 'none'; // Esconde o link
-          // Adiciona ao corpo da página
-          document.body.appendChild(link);
-          // Dispara um clique programático
-          link.click();
-          // Remove o link após o clique
-          document.body.removeChild(link);
-        } else {
-          alert('URL de pagamento não encontrada');
-        }
-      } catch (error) {
-        // Em caso de erro de rede ou outro
-        console.error('Erro na requisição:', error);
-        alert('Erro de conexão. Tente novamente.');
-      } finally {
-        // Reabilita o botão caso não tenha redirecionado
-        this.disabled = false;
-        this.textContent = 'Comprar';
-      }
+        });
     });
-  });
-</script>
+    </script>
 </body>
 </html>

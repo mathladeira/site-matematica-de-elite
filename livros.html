@@ -1,69 +1,72 @@
 <!doctype html>
 <html lang="pt-br">
+<!-- CONFIGURAÇÃO DO SITE -->
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Livros Matemática de Elite: provas resolvidas e comentadas para concursos militares, com foco na EFOMM." />
-  <title>Livros | Matemática de Elite</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Livros Matemática de Elite: provas resolvidas e comentadas para concursos militares, com foco na EFOMM." />
+    <title>Livros | Matemática de Elite</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
 </head>
-
+<!-- CORPO DO SITE -->
 <body>
-  <header>
-    <div class="container header-content">
-      <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
-      <nav class="social">
-        <a href="https://www.youtube.com/@matematica_elite" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
-        <a href="https://www.instagram.com/matematicaelite/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
-        <a href="https://wa.me/5591982218946" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icone_whatsapp.svg" alt="WhatsApp"></a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <div class="container">
-      <h1>Livros</h1>
-      <p>Provas resolvidas e comentadas, com foco em clareza, método e ritmo de prova.</p>
-
-      <section class="products" aria-label="Livros disponíveis">
-        <h2 class="section-title">Coleção</h2>
-        <p class="section-subtitle">Escolha um livro para ver os detalhes, amostra grátis e opções de compra:</p>
-
-        <div class="product-grid">
-          <article class="product-card">
-            <h3 class="product-title">Provas da EFOMM 2020–2026 resolvidas</h3>
-            <p class="product-desc">As últimas questões da EFOMM comentadas, passo a passo, com didática de professor.</p>
-            <p class="product-note">
-              Inclui uma amostra grátis para você conferir o estilo antes de comprar.
-            </p>
-            <a class="btn btn-primary" href="livro-efomm-2020-2026.html" rel="noopener noreferrer">
-              Ver detalhes do livro
-            </a>
-          </article>
-
-          <article class="product-card product-card--muted">
-            <h3 class="product-title">Mais livros em breve</h3>
-            <p class="product-desc">Estou trabalhando outras provas resolvidas e comentadas e mais três livros de teoria e exercícios específicos para a EFOMM.</p>
-            <p class="product-note">Quer ser avisado quando sair?</p>
-            <a class="btn btn-ghost" href="https://wa.me/5591982218946?text=Quero%20ser%20avisado%20quando%20sa%C3%ADrem%20novos%20livros%20do%20Matem%C3%A1tica%20de%20Elite." target="_blank" rel="noopener noreferrer">
-              Me avise no WhatsApp
-            </a>
-          </article>
+    <!-- CABEÇALHO DO SITE -->
+    <header>
+        <div class="container header-content">
+            <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
+            <nav class="social">
+                <a href="https://www.youtube.com/@matematica_elite" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
+                <a href="https://www.instagram.com/matematicaelite/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
+                <a href="https://wa.me/5591982218946" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icone_whatsapp.svg" alt="WhatsApp"></a>
+            </nav>
         </div>
-      </section>
-    </div>
-  </main>
-
-  <footer>
-    <div class="container footer-content">
-      <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
-    </div>
-  </footer>
-
-  <script>
-    const yearSpan = document.getElementById("year");
-    yearSpan.textContent = new Date().getFullYear();
-  </script>
+    </header>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+        <div class="container">
+            <h1>Livros</h1>
+            <p>Provas resolvidas e comentadas, com foco em clareza, método e ritmo de prova.</p>
+            <!-- SEÇÃO DOS LIVROS DISPONÍVEIS -->
+            <section class="products" aria-label="Livros disponíveis">
+                <h2 class="section-title">Coleção</h2>
+                <p class="section-subtitle">Escolha um livro para ver os detalhes, amostra grátis e opções de compra:</p>
+                <!-- GRID DOS LIVROS -->
+                <div class="product-grid">
+                    <!-- EFOMM 2020-2026 -->
+                    <article class="product-card">
+                        <h3 class="product-title">Provas da EFOMM 2020–2026 resolvidas</h3>
+                        <p class="product-desc">As últimas questões da EFOMM comentadas, passo a passo, com didática de professor.</p>
+                        <p class="product-note">
+                        Inclui uma amostra grátis para você conferir o estilo antes de comprar.
+                        </p>
+                        <a class="btn btn-primary" href="livro-efomm-2020-2026.html" rel="noopener noreferrer">
+                        Ver detalhes do livro
+                        </a>
+                    </article>
+                    <!-- OUTROS LIVROS -->
+                    <article class="product-card product-card--muted">
+                        <h3 class="product-title">Mais livros em breve</h3>
+                        <p class="product-desc">Estou trabalhando outras provas resolvidas e comentadas e mais três livros de teoria e exercícios específicos para a EFOMM.</p>
+                        <p class="product-note">Quer ser avisado quando sair?</p>
+                        <a class="btn btn-ghost" href="https://wa.me/5591982218946?text=Quero%20ser%20avisado%20quando%20sa%C3%ADrem%20novos%20livros%20do%20Matem%C3%A1tica%20de%20Elite." target="_blank" rel="noopener noreferrer">
+                        Me avise no WhatsApp
+                        </a>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- RODAPÉ -->
+    <footer>
+        <div class="container footer-content">
+        <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
+        </div>
+    </footer>
+    <!-- SCRIPT QUE DEFINE O ANO AUTOMATICAMENTE -->
+    <script>
+        const yearSpan = document.getElementById("year");
+        yearSpan.textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

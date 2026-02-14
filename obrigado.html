@@ -1,138 +1,139 @@
 <!doctype html>
 <html lang="pt-br">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Confirmação de pagamento - Matemática de Elite" />
-  <title>Pagamento | Matemática de Elite</title>
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Confirmação de pagamento - Matemática de Elite" />
+    <title>Pagamento | Matemática de Elite</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
 </head>
-
+<!-- CORPO -->
 <body>
-  <header>
-    <div class="container header-content">
-      <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
-      <nav class="social">
-        <a href="https://www.youtube.com/@matematicadeelite2026" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
-        <a href="https://www.instagram.com/matheusladeira98" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
-        <a href="https://wa.me/5591985430575" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icone_whatsapp.svg" alt="WhatsApp"></a>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <div class="container">
-      <h1>Quase lá...</h1>
-      <p id="subtitle">Estamos confirmando seu pagamento com segurança.</p>
-
-      <section class="products" aria-label="Status do pagamento">
-        <div class="product-grid" style="grid-template-columns: 1fr;">
-          <article class="product-card">
-            <h3 class="product-title" id="statusTitle">Confirmando…</h3>
-            <p class="product-desc" id="statusText">
-              Se você acabou de pagar, isso pode levar alguns segundos.
-            </p>
-            <p class="product-note" id="sidBox" style="display:none;"></p>
-            <!-- BOTÃO BAIXAR MEU LIVRO -->
-            <a class="btn btn-primary" id="downloadBtn" href="#" style="display:none;" rel="noopener noreferrer">
-              Baixar meu livro
-            </a>
-            <!-- BOTÃO VOLTAR SO SITE -->
-            <a class="btn btn-ghost" id="backBtn" href="index.html" style="margin-top:12px;">
-              Voltar ao site
-            </a>
-          </article>
+    <!-- CABEÇALHO DO SITE -->
+    <header>
+        <div class="container header-content">
+        <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
+        <nav class="social">
+            <a href="https://www.youtube.com/@matematicadeelite2026" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
+            <a href="https://www.instagram.com/matheusladeira98" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
+            <a href="https://wa.me/5591985430575" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icone_whatsapp.svg" alt="WhatsApp"></a>
+        </nav>
         </div>
-      </section>
-    </div>
-  </main>
-
-  <footer>
-    <div class="container footer-content">
-      <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
-    </div>
-  </footer>
-  <!-- SCRIPT QUE CHAMA O BACKEND -->
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-    const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
-    let tries = 0;
-    let timer = null;
-    const $statusTitle = document.getElementById("statusTitle");
-    const $statusText  = document.getElementById("statusText");
-    const $downloadBtn = document.getElementById("downloadBtn");
-    const $retryBtn    = document.getElementById("retryBtn");
-    const $sidBox      = document.getElementById("sidBox");
-    const params = new URLSearchParams(window.location.search);
-    const sid = params.get("sid");
-    if (!sid) {
-      $statusTitle.textContent = "Ops… faltou o código do pedido 😅";
-      $statusText.textContent = "Volte para o site e tente novamente. Se precisar, me chame no WhatsApp.";
-      $retryBtn.style.display = "inline-flex";
-      $retryBtn.onclick = (e) => { e.preventDefault(); location.href = "index.html"; };
-    } else {
-      $sidBox.style.display = "block";
-      $sidBox.textContent = `Código do pedido: ${sid}`;
-      startPolling();
-    }
-    async function checkPaymentOnce() {
-      const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
-      const res = await fetch(url, {
-        method: "GET",
-        headers: { "Accept": "application/json" }
-      });
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}`);
-      }
-      return await res.json();
-    }
-    function showPaid(downloadUrl) {
-      $statusTitle.textContent = "Pagamento confirmado ✅";
-      $statusText.textContent = "Seu download está liberado. Se quiser baixar depois, salve este link.";
-      $downloadBtn.href = downloadUrl;
-      $downloadBtn.style.display = "inline-flex";
-      $retryBtn.style.display = "none";
-    }
-    function showWaiting() {
-      $statusTitle.textContent = "Confirmando…";
-      $statusText.textContent = "Aguarde alguns segundos. Estamos consultando o status do pagamento.";
-      $downloadBtn.style.display = "none";
-      $retryBtn.style.display = "none";
-    }
-    function showError(message) {
-      $statusTitle.textContent = "Não consegui confirmar agora 😬";
-      $statusText.textContent = message;
-      $downloadBtn.style.display = "none";
-      $retryBtn.style.display = "inline-flex";
-      $retryBtn.onclick = (e) => { e.preventDefault(); startPolling(true); };
-    }
-    function startPolling(reset=false) {
-      if (reset) { tries = 0; }
-      if (timer) { clearTimeout(timer); }
-
-      showWaiting();
-      poll();
-    }
-    async function poll() {
-      tries += 1;
-      try {
-        const data = await checkPaymentOnce();
-        if (data && data.paid && data.download_url) {
-          showPaid(data.download_url);
-          return;
-        }
-        showWaiting();
-        if (tries < 24) {
-          timer = setTimeout(poll, 2500);
+    </header>
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main>
+        <div class="container">
+            <h1>Quase lá...</h1>
+            <p id="subtitle">Estamos confirmando seu pagamento com segurança.</p>
+            <!-- SEÇÃO DE STATUS DO PAGAMENTO -->
+            <section class="products" aria-label="Status do pagamento">
+                <div class="product-grid" style="grid-template-columns: 1fr;">
+                    <article class="product-card">
+                        <h3 class="product-title" id="statusTitle">Confirmando…</h3>
+                        <p class="product-desc" id="statusText">
+                            Se você acabou de pagar, isso pode levar alguns segundos.
+                        </p>
+                        <p class="product-note" id="sidBox" style="display:none;"></p>
+                        <!-- BOTÃO BAIXAR MEU LIVRO -->
+                        <a class="btn btn-primary" id="downloadBtn" href="#" style="display:none;" rel="noopener noreferrer">
+                            Baixar meu livro
+                        </a>
+                        <!-- BOTÃO VOLTAR SO SITE -->
+                        <a class="btn btn-ghost" id="backBtn" href="index.html" style="margin-top:12px;">
+                            Voltar ao site
+                        </a>
+                    </article>
+                </div>
+            </section>
+        </div>
+    </main>
+    <!-- RODAPÉ -->
+    <footer>
+        <div class="container footer-content">
+        <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
+        </div>
+    </footer>
+    <!-- SCRIPT QUE CHAMA O BACKEND -->
+    <script>
+        document.getElementById("year").textContent = new Date().getFullYear();
+        const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
+        let tries = 0;
+        let timer = null;
+        const $statusTitle = document.getElementById("statusTitle");
+        const $statusText  = document.getElementById("statusText");
+        const $downloadBtn = document.getElementById("downloadBtn");
+        const $retryBtn    = document.getElementById("retryBtn");
+        const $sidBox      = document.getElementById("sidBox");
+        const params = new URLSearchParams(window.location.search);
+        const sid = params.get("sid");
+        if (!sid) {
+        $statusTitle.textContent = "Ops… faltou o código do pedido 😅";
+        $statusText.textContent = "Volte para o site e tente novamente. Se precisar, me chame no WhatsApp.";
+        $retryBtn.style.display = "inline-flex";
+        $retryBtn.onclick = (e) => { e.preventDefault(); location.href = "index.html"; };
         } else {
-          showError("Se você já pagou, clique em “Tentar novamente”. Se continuar, me chame no WhatsApp.");
+        $sidBox.style.display = "block";
+        $sidBox.textContent = `Código do pedido: ${sid}`;
+        startPolling();
         }
-      } catch (err) {
-        showError("Pode ser um bloqueio de segurança do navegador (CORS) ou instabilidade. Clique em “Tentar novamente”.");
-        console.error(err);
-      }
-    }
-  </script>
+        async function checkPaymentOnce() {
+        const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
+        const res = await fetch(url, {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        });
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
+        return await res.json();
+        }
+        function showPaid(downloadUrl) {
+        $statusTitle.textContent = "Pagamento confirmado.";
+        $statusText.textContent = "Seu download está liberado. Se quiser baixar depois, salve este link.";
+        $downloadBtn.href = downloadUrl;
+        $downloadBtn.style.display = "inline-flex";
+        $retryBtn.style.display = "none";
+        }
+        function showWaiting() {
+        $statusTitle.textContent = "Confirmando…";
+        $statusText.textContent = "Aguarde alguns segundos. Estamos consultando o status do pagamento.";
+        $downloadBtn.style.display = "none";
+        $retryBtn.style.display = "none";
+        }
+        function showError(message) {
+        $statusTitle.textContent = "Não consegui confirmar agora.";
+        $statusText.textContent = message;
+        $downloadBtn.style.display = "none";
+        $retryBtn.style.display = "inline-flex";
+        $retryBtn.onclick = (e) => { e.preventDefault(); startPolling(true); };
+        }
+        function startPolling(reset=false) {
+        if (reset) { tries = 0; }
+        if (timer) { clearTimeout(timer); }
+
+        showWaiting();
+        poll();
+        }
+        async function poll() {
+        tries += 1;
+        try {
+            const data = await checkPaymentOnce();
+            if (data && data.paid && data.download_url) {
+            showPaid(data.download_url);
+            return;
+            }
+            showWaiting();
+            if (tries < 24) {
+            timer = setTimeout(poll, 2500);
+            } else {
+            showError("Se você já pagou, clique em “Tentar novamente”. Se continuar, me chame no WhatsApp.");
+            }
+        } catch (err) {
+            showError("Pode ser um bloqueio de segurança do navegador (CORS) ou instabilidade. Clique em “Tentar novamente”.");
+            console.error(err);
+        }
+        }
+    </script>
 </body>
 </html>
