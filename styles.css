@@ -397,6 +397,21 @@ li::before {
   border-radius: 14px;
 }
 
+/* FORMATA O PARÁGRAFO SOBRE O DIREITO DE ARREPENDIMENTO */
+.purchase-security {
+  margin-top: 16px;
+  font-size: 0.95rem;
+  color: rgb(var(--grey-rgb));
+  line-height: 1.6;
+}
+.purchase-security a {
+  color: rgb(var(--blue-rgb));
+  text-decoration: none;
+}
+.purchase-security a:hover {
+  text-decoration: underline;
+}
+
 /* FORMATA A SEÇÃO CALL TO ACTION */
 /* FORMATA O BLOCO DO CTA */
 .cta-section {
