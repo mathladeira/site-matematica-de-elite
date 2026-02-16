@@ -6,7 +6,7 @@
     <meta name="description" content="Matemática de Elite: materiais e mentoria individual de Matemática com foco na EFOMM. Conteúdo do zero ao nível da prova, com direção e acompanhamento." />
     <title>Matemática de Elite</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
+    <link rel="icon" href="assets/favicom_site.svg" type="image/svg+xml">
 </head>
 <!-- CORPO DO SITE -->
 <body>
@@ -24,50 +24,54 @@
     </header>
     <!-- CONTEÚDO DA PÁGINA -->
     <main>
-        <div class="container">
-        <h1>EFOMM sem improviso: método, direção e prática.</h1>
-        <p>👉 Livros de provas resolvidas e comentadas de 2020 a 2026 (EFOMM e outras provas militares).</p>
-        <p>👉 Mentoria individual de Cálculo do zero ao nível da prova.</p>
-        <!-- SEÇÃO DE PRODUTOS -->
-        <section class="products" aria-label="Produtos">
-            <h2 class="section-title">Produtos</h2>
-            <p class="section-subtitle">Escolha o que encaixa no seu momento agora:</p>
-            <!-- GRID DOS PRODUTOS -->
-            <div class="product-grid">
-                <!-- LIVROS -->
-                <article class="product-card">
-                    <h3 class="product-title">Livros de provas resolvidas (EFOMM e militares)</h3>
-                    <p class="product-desc">Coleção de provas resolvidas e comentadas, com foco em entendimento e método.</p>
-                    <p class="product-note">
-                        Ideal para estudar por questões, com explicação passo a passo.
-                    </p>
-                    <a class="btn btn-ghost" href="livros.html" rel="noopener noreferrer">
-                        Ver os livros
-                    </a>
-                </article>
-                <!-- MENTORIA -->
-                <article class="product-card">
-                    <h3 class="product-title">Mentoria individual de Cálculo para EFOMM</h3>
-                    <p class="product-desc">Do zero ao nível de prova com acompanhamento individual.</p>
-                    <p class="product-note">
-                        Ideal para quem nunca estudou Cálculo e precisa de direção.
-                    </p>
-                    <a class="btn btn-primary" href="mentoria.html" rel="noopener noreferrer">
-                        Saber mais sobre a mentoria
-                    </a>
-                    <!-- TESTE DA PÁGINA OBRIGADO -->
-                    <a class="btn btn-primary" href="obrigado.html" rel="noopener noreferrer">
-                        obrigado.html (Remover depois)
-                    </a>
-                </article>
+        <section class="intro-index" aria-label="Apresentação do site">
+            <div class="container">
+                <h1> EFOMM sem improviso: método, direção e prática </h1>
+                <p>👉 Livros de provas resolvidas e comentadas de 2020 a 2026 (EFOMM e outras provas militares).</p>
+                <p>👉 Mentoria individual de Cálculo do zero ao nível da prova.</p>
             </div>
         </section>
-        </div>
+        <!-- SEÇÃO DE PRODUTOS -->
+        <section class="products" aria-label="Produtos">
+            <div class="container">
+                <h2 class="section-title">Produtos</h2>
+                <p class="section-subtitle">Escolha o que se encaixa no seu momento agora:</p>
+                <!-- GRID DOS PRODUTOS -->
+                <div class="product-grid">
+                    <!-- CARD LIVROS -->
+                    <article class="product-card">
+                        <h3 class="product-title">Livros de provas resolvidas (EFOMM e militares)</h3>
+                        <p class="product-desc">Coleção de provas resolvidas e comentadas, com foco em entendimento e método.</p>
+                        <p class="product-note">
+                            Ideal para estudar por questões, com explicação passo a passo.
+                        </p>
+                        <a class="btn btn-ghost" href="livros.html" rel="noopener noreferrer">
+                            Ver os livros
+                        </a>
+                    </article>
+                    <!-- CARD MENTORIA -->
+                    <article class="product-card">
+                        <h3 class="product-title">Mentoria individual de Cálculo para EFOMM</h3>
+                        <p class="product-desc">Do zero ao nível de prova com acompanhamento individual.</p>
+                        <p class="product-note">
+                            Ideal para quem nunca estudou Cálculo e precisa de direção.
+                        </p>
+                        <a class="btn btn-primary" href="mentoria.html" rel="noopener noreferrer">
+                            Saber mais sobre a mentoria
+                        </a>
+                        <!-- TESTE DA PÁGINA OBRIGADO -->
+                        <a class="btn btn-primary" href="obrigado.html" rel="noopener noreferrer">
+                            obrigado.html (Remover depois)
+                        </a>
+                    </article>
+                </div>
+            </div>
+        </section>
     </main>
     <!-- RODAPÉ DO SITE -->
     <footer>
         <div class="container footer-content">
-        <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
+            <small>© <span id="year"></span> Matemática de Elite. Todos os direitos reservados.</small>
         </div>
     </footer>
     <!-- SCRIPT QUE DEFINE O ANO AUTOMATICAMENTE -->

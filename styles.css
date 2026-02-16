@@ -10,6 +10,17 @@
 
 * { box-sizing: border-box; }
 
+/*  FORMATAÇÃO DO HTML */
+html{
+  scroll-behavior: smooth;
+}
+#comprar{
+  scroll-margin-top: 110px;
+}
+#gratis{
+  scroll-margin-top: 110px;
+}
+
 /* FORMATAÇÃO DO CORPO DO SITE */
 body {
   margin: 0;
@@ -171,7 +182,6 @@ footer small {
   border-radius: 20px;
   padding: 15px;
   box-shadow: 0 18px 50px rgb(var(--black-rgb)/0.45);
-  margin-bottom: 26px;
 }
 /* FORMATAÇÃO DOS TEXTOS DO CARD */
 .product-title {

@@ -7,7 +7,7 @@
     <meta name="description" content="Livro EFOMM 2020–2026 resolvidas: questões comentadas passo a passo, com amostra grátis." />
     <title>EFOMM 2020-2026 Resolvidas | Matemática de Elite</title>
     <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" type="assets" href="assets/favicom_site.svg" type="image/svg+xml">
+    <link rel="icon" href="assets/favicom_site.svg" type="image/svg+xml">
 </head>
 <!-- CORPO DO SITE -->
 <body>
@@ -22,65 +22,69 @@
             </nav>
         </div>
     </header>
-    <!-- CONTEÚDO DO SITE -->
+    <!-- CONTEÚDO DA PÁGINA -->
     <main>
-        <div class="container">
-            <div class="page-hero">
-                <h1>Provas da EFOMM 2020-2026 resolvidas</h1>
-                <p>Um livro para estudar por questões com clareza: interpretação, estratégia e resolução completa, sem pular etapas.</p>
-                <!-- CARROSSEL DE IMAGENS DO LIVRO -->
-                <div class="carousel">
-                    <div class="carousel-track">
-                        <img src="imagens_livro_efomm/img_1.png" alt="Capa do livro">
-                        <img src="imagens_livro_efomm/img_2.png" alt="Sumário do livro">
-                        <img src="imagens_livro_efomm/img_3.png" alt="Exemplo de resolução comentada 1">
-                        <img src="imagens_livro_efomm/img_4.png" alt="Exemplo de resolução comentada 2">
-                        <img src="imagens_livro_efomm/img_5.png" alt="Exemplo de resolução comentada 3">
+        <section class="livro-efomm-intro">
+            <div class="container">
+                <div class="page-hero">
+                    <h1>Provas da EFOMM 2020-2026 resolvidas</h1>
+                    <p>Um livro para estudar por questões com clareza: interpretação, estratégia e resolução completa, sem pular etapas.</p>
+                    <!-- CARROSSEL DE IMAGENS DO LIVRO -->
+                    <div class="carousel">
+                        <div class="carousel-track">
+                            <img src="imagens_livro_efomm/img_1.png" alt="Capa do livro">
+                            <img src="imagens_livro_efomm/img_2.png" alt="Sumário do livro">
+                            <img src="imagens_livro_efomm/img_3.png" alt="Exemplo de resolução comentada 1">
+                            <img src="imagens_livro_efomm/img_4.png" alt="Exemplo de resolução comentada 2">
+                            <img src="imagens_livro_efomm/img_5.png" alt="Exemplo de resolução comentada 3">
+                        </div>
+                        <button class="carousel-btn prev">&#10094;</button>
+                        <button class="carousel-btn next">&#10095;</button>
                     </div>
-                    <button class="carousel-btn prev">&#10094;</button>
-                    <button class="carousel-btn next">&#10095;</button>
-                </div>
-                <!-- SCRIPT DE ALTERNÂNCIA DE IMAGENS -->
-                <script>
-                const track = document.querySelector('.carousel-track');
-                const slides = Array.from(track.children);
-                const nextBtn = document.querySelector('.carousel-btn.next');
-                const prevBtn = document.querySelector('.carousel-btn.prev');
-                let currentIndex = 0;
-                function updateCarousel() {
-                    const slideWidth = slides[0].getBoundingClientRect().width;
-                    track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
-                }
-                nextBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex + 1) % slides.length;
-                    updateCarousel();
-                });
-                prevBtn.addEventListener('click', () => {
-                    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                    updateCarousel();
-                });
-                window.addEventListener('resize', updateCarousel);
-                </script>
-                <!-- BOTÕES COMPRAR/VER AMOSTRA GRÁTIS -->
-                <div class="hero-actions">
-                    <button class="btn btn-primary btn-comprar-pago" data-ebook-id="efomm_2020_2026">Adquirir o livro completo</button>
-                    <a class="btn btn-ghost" href="https://sitebackend-wandering-flower-7897.fly.dev/gratis" target="_blank" rel="noopener noreferrer">
-                        Acessar amostra grátis
-                    </a>
+                    <!-- SCRIPT DE ALTERNÂNCIA DE IMAGENS -->
+                    <script>
+                    const track = document.querySelector('.carousel-track');
+                    const slides = Array.from(track.children);
+                    const nextBtn = document.querySelector('.carousel-btn.next');
+                    const prevBtn = document.querySelector('.carousel-btn.prev');
+                    let currentIndex = 0;
+                    function updateCarousel() {
+                        const slideWidth = slides[0].getBoundingClientRect().width;
+                        track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+                    }
+                    nextBtn.addEventListener('click', () => {
+                        currentIndex = (currentIndex + 1) % slides.length;
+                        updateCarousel();
+                    });
+                    prevBtn.addEventListener('click', () => {
+                        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+                        updateCarousel();
+                    });
+                    window.addEventListener('resize', updateCarousel);
+                    </script>
+                    <!-- BOTÕES COMPRAR/VER AMOSTRA GRÁTIS -->
+                    <div class="hero-actions">
+                        <a class="btn btn-primary" href="#comprar">Adquirir o livro completo</a>
+                        <a class="btn btn-ghost" href="#gratis">Acessar amostra grátis</a>
+                    </div>
                 </div>
             </div>
-            <!-- O QUE TEM DENTRO? -->
+        </section>
+        <!-- O QUE TEM DENTRO? -->
+        <section class="o-que-tem-dentro">
             <div class="container">
                 <h2 class="section-title">O que tem dentro</h2>
-                    <ul>
-                        <li>Questões comentadas passo a passo (com didática de professor).</li>
-                        <li>Foco em método: como pensar e não só “decorar macete”.</li>
-                        <li>Organização para você revisar rápido nas vésperas da prova.</li>
-                        <li>Atualizações conforme novas provas forem saindo.</li>
-                    </ul>
+                <ul>
+                    <li>Questões comentadas passo a passo (com didática de professor).</li>
+                    <li>Foco em método: como pensar e não só “decorar macete”.</li>
+                    <li>Organização para você revisar rápido nas vésperas da prova.</li>
+                    <li>Atualizações conforme novas provas forem saindo.</li>
+                </ul>
             </div>
-            <!-- AMOSTRA GRÁTIS -->
-            <div class="container">
+        </section>
+        <!-- AMOSTRA GRÁTIS -->
+        <section class="amostra-gratis">
+            <div class="container" id="gratis">
                 <h2 class="section-title">Amostra grátis</h2>
                 <p class="section-subtitle">Antes de investir, confira exatamente o estilo do material com uma amostra grátis da prova de 2025.</p>
                 <div class="imagem-amostra">
@@ -91,7 +95,7 @@
                         <h3 class="product-title">EFOMM 2025 resolvida e comentada</h3>
                         <p class="product-desc">Uma amostra gratuita do livro, com o mesmo padrão de explicação do material completo.</p>
                         <p class="product-note">
-                        Se você gostar do estilo, o livro completo vai encaixar perfeitamente.
+                            Se você gostar do estilo, o livro completo vai encaixar perfeitamente.
                         </p>
                         <a class="btn btn-ghost" href="https://sitebackend-wandering-flower-7897.fly.dev/gratis" target="_blank" rel="noopener noreferrer">
                             Acessar grátis
@@ -99,8 +103,10 @@
                     </article>
                 </div>
             </div>
-            <!-- COMPRAR/MENTORIA -->
-            <div class="container">
+        </section>
+        <section class="comprar-politica-reembolso">
+            <!-- COMPRAR/POLÍTICA DE REEMBOLSO -->
+            <div class="container" id="comprar">
                 <h2 class="section-title">Comprar</h2>
                 <p class="muted">Deseja adquirir o livro completo e turbinar a sua preparação com as 140 questões dos últimos 7 anos de prova resolvidas e comentadas? Clique no link abaixo e adquira o livro completo.</p>
                 <div class="hero-actions">
@@ -111,7 +117,7 @@
                     <a href="politica-de-reembolso.html">Leia a política de reembolso completa</a>.
                 </p>
             </div>
-        </div>
+        </section>
     </main>
     <!-- RODAPÉ DO SITE -->
     <footer>
