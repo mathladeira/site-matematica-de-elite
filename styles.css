@@ -21,7 +21,7 @@ html{
   scroll-margin-top: 110px;
 }
 /* DEBUG */
-section{
+/*section{
   outline: 2px solid blue;
 }
 .container{
@@ -29,7 +29,7 @@ section{
 }
 .product-card{
   outline: 2px solid orange;
-}
+}*/
 
 /* FORMATAÇÃO DO CORPO DO SITE */
 body {
@@ -179,6 +179,18 @@ footer small {
   color: rgb(var(--grey-rgb));
   font-size: 0.85rem;
 }
+/* FORMATA OS LINKS DO RODAPÉ */
+footer a {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: rgb(var(--white-rgb));
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin: 0 3px;
+}
+footer a:hover {
+    color: rgb(var(--white-rgb));
+}
 
 /* FORMATAÇÃO DA SEÇÃO DE PRODUTOS */
 .section-title {
@@ -288,7 +300,6 @@ button.btn {
       transparent 25%,
       rgb(var(--graphite-rgb)/0.30) 35%,
       rgb(var(--black-rgb)/0.80) 100%);
-  border-bottom: 1px solid rgb(var(--white-rgb) / 0.10);
   margin: 0;
 }
 .pagina-mentoria main {
@@ -337,22 +348,22 @@ button.btn {
 }
 
 /* FORMATAÇÃO DA LISTA DA PÁGINA MENTORIA */
-ul {
+.pagina-mentoria ul {
   margin: 16px 0 24px;
   padding-left: 0;
   list-style: none;
 }
-main ul {
+.pagina-mentoria main ul {
   max-width: 60ch;
 }
-li {
+.pagina-mentoria li {
   position: relative;
   padding-left: 28px;
   margin-bottom: 12px;
   color: rgb(var(--white-rgb)/0.80);
   line-height: 1.6;
 }
-li::before {
+.pagina-mentoria li::before {
   content: "";
   position: absolute;
   left: 0;
@@ -525,3 +536,50 @@ li::before {
     height: 380px;
     border-radius: 12px;
 }
+
+/* PÁGINA POLÍTICA DE CANCELAMENTO */
+    /* Página reembolso: tira numeração nativa do OL */
+    .pagina-reembolso ol {
+        list-style: none;
+        padding-left: 0;
+        margin-left: 0;
+    }
+    /* Lista principal */
+    .lista-geral-pagina-reembolso {
+        counter-reset: secao;
+    }
+    /* Itens principais */
+    .lista-geral-pagina-reembolso > li {
+        counter-increment: secao;
+        counter-reset: subsecao;
+        margin-bottom: 32px;
+    }
+    /* Número principal (1., 2., 3.) */
+    .lista-geral-pagina-reembolso > li > h2::before {
+        content: counter(secao) ". ";
+        font-weight: 700;
+        font-size: 1.5rem;
+        color: rgb(var(--white-rgb));
+        display: inline-block;
+        margin-right: 8px;
+    }
+    /* Sublista */
+    .lista-geral-pagina-reembolso > li > ol {
+        counter-reset: subsecao;
+        margin-top: 12px;
+        padding-left: 0;
+    }
+    /* Subitens */
+    .lista-geral-pagina-reembolso > li > ol > li {
+        counter-increment: subsecao;
+        margin-bottom: 12px;
+        padding-left: 0;
+    }
+    /* Numeração 2.1, 2.2... */
+    .lista-geral-pagina-reembolso > li > ol > li > h3::before {
+        content: counter(secao) "." counter(subsecao) " ";
+        font-weight: 600;
+        color: rgb(var(--white-rgb));
+        display: inline-block;
+        min-width: 3.2ch;
+    }
