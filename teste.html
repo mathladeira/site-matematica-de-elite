@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste de Isolamento do Grid</title>
+  <style>
+    /* CSS BÁSICO SÓ PRA GENTE VER AS COISAS */
+    body {
+      background-color: #0a192f; /* Um fundo escuro parecido com o seu */
+      font-family: sans-serif;
+      color: #fff;
+    }
+
+    /* O CONTAINER PAI - FORÇANDO A CENTRALIZAÇÃO */
+    .container-teste {
+      max-width: 1200px;
+      margin: 40px auto; /* Centraliza o container na página */
+      padding: 20px;
+      border: 2px solid red; /* Borda pra gente ver o pai */
+
+      /* --- Abordagem Flexbox Pai --- */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* O GRID FILHO - SENDO OBEDIENTE */
+    .grid-teste {
+      border: 2px solid limegreen; /* Borda pra gente ver o filho */
+      
+      /* --- Configuração do Grid --- */
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 360px));
+      gap: 24px;
+
+      /* --- A propriedade que faz ele encolher --- */
+      width: fit-content;
+    }
+
+    /* O CARD (só pra ter conteúdo) */
+    .card-teste {
+      background-color: #112240;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #64ffda;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container-teste">
+    <h2>Produtos</h2>
+    <p>Escolha o que se encaixa no seu momento agora:</p>
+
+    <!-- O GRID EM QUESTÃO -->
+    <div class="grid-teste">
+      <!-- CARD 1 -->
+      <article class="card-teste">
+        <h3>Livros de provas resolvidas</h3>
+        <p>Coleção de provas resolvidas e comentadas.</p>
+      </article>
+      <!-- CARD 2 -->
+      <article class="card-teste">
+        <h3>Mentoria individual</h3>
+        <p>Do zero ao nível de prova com acompanhamento.</p>
+      </article>
+    </div>
+  </div>
+
+</body>
+</html>

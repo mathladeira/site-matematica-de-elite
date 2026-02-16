@@ -16,15 +16,15 @@
         <div class="container header-content">
             <a href="index.html" class="brand"><img src="assets/logo_header.svg" alt="Matemática de Elite" /></a>
             <nav class="social">
-                <a href="https://www.youtube.com/@matematica_elite" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
-                <a href="https://www.instagram.com/matematicaelite/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
+                <a href="https://www.youtube.com/@matematicadeelite" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><img src="assets/icone_youtube.svg" alt="YouTube"></a>
+                <a href="https://www.instagram.com/matematicadelite/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img src="assets/icone_instagram.svg" alt="Instagram"></a>
                 <a href="https://wa.me/5591982218946" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><img src="assets/icone_whatsapp.svg" alt="WhatsApp"></a>
             </nav>
         </div>
     </header>
     <!-- CONTEÚDO DA PÁGINA -->
     <main>
-        <section class="livro-efomm-intro">
+        <section class="section">
             <div class="container">
                 <div class="page-hero">
                     <h1>Provas da EFOMM 2020-2026 resolvidas</h1>
@@ -41,27 +41,6 @@
                         <button class="carousel-btn prev">&#10094;</button>
                         <button class="carousel-btn next">&#10095;</button>
                     </div>
-                    <!-- SCRIPT DE ALTERNÂNCIA DE IMAGENS -->
-                    <script>
-                    const track = document.querySelector('.carousel-track');
-                    const slides = Array.from(track.children);
-                    const nextBtn = document.querySelector('.carousel-btn.next');
-                    const prevBtn = document.querySelector('.carousel-btn.prev');
-                    let currentIndex = 0;
-                    function updateCarousel() {
-                        const slideWidth = slides[0].getBoundingClientRect().width;
-                        track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
-                    }
-                    nextBtn.addEventListener('click', () => {
-                        currentIndex = (currentIndex + 1) % slides.length;
-                        updateCarousel();
-                    });
-                    prevBtn.addEventListener('click', () => {
-                        currentIndex = (currentIndex - 1 + slides.length) % slides.length;
-                        updateCarousel();
-                    });
-                    window.addEventListener('resize', updateCarousel);
-                    </script>
                     <!-- BOTÕES COMPRAR/VER AMOSTRA GRÁTIS -->
                     <div class="hero-actions">
                         <a class="btn btn-primary" href="#comprar">Adquirir o livro completo</a>
@@ -71,7 +50,7 @@
             </div>
         </section>
         <!-- O QUE TEM DENTRO? -->
-        <section class="o-que-tem-dentro">
+        <section class="section">
             <div class="container">
                 <h2 class="section-title">O que tem dentro</h2>
                 <ul>
@@ -83,7 +62,7 @@
             </div>
         </section>
         <!-- AMOSTRA GRÁTIS -->
-        <section class="amostra-gratis">
+        <section class="section">
             <div class="container" id="gratis">
                 <h2 class="section-title">Amostra grátis</h2>
                 <p class="section-subtitle">Antes de investir, confira exatamente o estilo do material com uma amostra grátis da prova de 2025.</p>
@@ -104,8 +83,8 @@
                 </div>
             </div>
         </section>
-        <section class="comprar-politica-reembolso">
-            <!-- COMPRAR/POLÍTICA DE REEMBOLSO -->
+        <!-- COMPRAR/POLÍTICA DE REEMBOLSO -->
+        <section class="section">
             <div class="container" id="comprar">
                 <h2 class="section-title">Comprar</h2>
                 <p class="muted">Deseja adquirir o livro completo e turbinar a sua preparação com as 140 questões dos últimos 7 anos de prova resolvidas e comentadas? Clique no link abaixo e adquira o livro completo.</p>
@@ -129,6 +108,27 @@
     <script>
         const yearSpan = document.getElementById("year");
         yearSpan.textContent = new Date().getFullYear();
+    </script>
+    <!-- SCRIPT QUE CONFIGURA O CARROSSEL -->
+    <script>
+        const track = document.querySelector('.carousel-track');
+        const slides = Array.from(track.children);
+        const nextBtn = document.querySelector('.carousel-btn.next');
+        const prevBtn = document.querySelector('.carousel-btn.prev');
+        let currentIndex = 0;
+        function updateCarousel() {
+            const slideWidth = slides[0].getBoundingClientRect().width;
+            track.style.transform = `translateX(-${slideWidth * currentIndex}px)`;
+        }
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            updateCarousel();
+        });
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            updateCarousel();
+        });
+        window.addEventListener('resize', updateCarousel);
     </script>
     <!-- SCRIPT QUE CHAMA O BACKEND -->
     <script>
@@ -177,7 +177,7 @@
         } finally {
             // Reabilita o botão caso não tenha redirecionado
             this.disabled = false;
-            this.textContent = 'Comprar';
+            this.textContent = 'Adquirir o livro completo';
         }
         });
     });
