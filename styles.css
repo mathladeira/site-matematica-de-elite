@@ -537,6 +537,108 @@ button.btn {
     border-radius: 12px;
 }
 
+/* PÁGINA POLÍTICA DE PRIVACIDADE */
+    /* Página legal: tira numeração nativa apenas dos OL */
+    .pagina-privacidade ol {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+    }
+    /* Mantém bullets para UL (se você quiser bullets) */
+    .pagina-privacidade ul {
+    list-style: square;
+    padding-left: 1.1rem;
+    margin: 10px 0 16px;
+    color: rgb(var(--grey-rgb));
+    }
+    .pagina-privacidade ul li {
+    margin-bottom: 6px;
+    }
+    /* Lista principal */
+    .lista-geral {
+    counter-reset: secao;
+    }
+    .lista-geral > li {
+    counter-increment: secao;
+    counter-reset: subsecao;
+    margin-bottom: 36px;
+    }
+    /* Número principal colado no H2 */
+    .lista-geral > li > h2::before {
+    content: counter(secao) ". ";
+    font-weight: 700;
+    font-size: 1.5rem;         /* acompanha seu h2 */
+    color: rgb(var(--white-rgb));
+    }
+    /* Sublista (2.1, 2.2...) */
+    .lista-geral > li > ol {
+    margin-top: 14px;
+    counter-reset: subsecao;
+    }
+    .lista-geral > li > ol > li {
+    counter-increment: subsecao;
+    margin-bottom: 18px;
+    }
+    /* Número do subitem colado no H3 */
+    .lista-geral > li > ol > li > h3::before {
+    content: counter(secao) "." counter(subsecao) " ";
+    font-weight: 600;
+    color: rgb(var(--white-rgb));
+    display: inline-block;
+    min-width: 3.2ch; /* alinha 2.1 / 10.1 bonitinho */
+    }
+
+/* PÁGINA TERMOS DE USO */
+    /* Página legal: tira numeração nativa apenas dos OL */
+    .pagina-termos-uso ol {
+    list-style: none;
+    padding-left: 0;
+    margin-left: 0;
+    }
+    /* Mantém bullets para UL (se você quiser bullets) */
+    .pagina-termos-uso ul {
+    list-style: square;
+    padding-left: 1.1rem;
+    margin: 10px 0 16px;
+    color: rgb(var(--grey-rgb));
+    }
+    .pagina-termos-uso ul li {
+    margin-bottom: 6px;
+    }
+    /* Lista principal */
+    .lista-geral {
+    counter-reset: secao;
+    }
+    .lista-geral > li {
+    counter-increment: secao;
+    counter-reset: subsecao;
+    margin-bottom: 36px;
+    }
+    /* Número principal colado no H2 */
+    .lista-geral > li > h2::before {
+    content: counter(secao) ". ";
+    font-weight: 700;
+    font-size: 1.5rem;         /* acompanha seu h2 */
+    color: rgb(var(--white-rgb));
+    }
+    /* Sublista (2.1, 2.2...) */
+    .lista-geral > li > ol {
+    margin-top: 14px;
+    counter-reset: subsecao;
+    }
+    .lista-geral > li > ol > li {
+    counter-increment: subsecao;
+    margin-bottom: 18px;
+    }
+    /* Número do subitem colado no H3 */
+    .lista-geral > li > ol > li > h3::before {
+    content: counter(secao) "." counter(subsecao) " ";
+    font-weight: 600;
+    color: rgb(var(--white-rgb));
+    display: inline-block;
+    min-width: 3.2ch; /* alinha 2.1 / 10.1 bonitinho */
+    }
+
 /* PÁGINA POLÍTICA DE CANCELAMENTO */
     /* Página reembolso: tira numeração nativa do OL */
     .pagina-reembolso ol {
