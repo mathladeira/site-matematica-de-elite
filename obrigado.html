@@ -83,16 +83,18 @@
         $sidBox.textContent = `Código do pedido: ${sid}`;
         startPolling();
         }
-        async function checkPaymentOnce() {
-        const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
-        const res = await fetch(url, {
-            method: "GET",
-            headers: { "Accept": "application/json" }
-        });
-        if (!res.ok) {
-            throw new Error(`HTTP ${res.status}`);
-        }
-        return await res.json();
+        async function checkPaymentOnce(sid) {
+        const url = 'https://sitebackend-wandering-flower-7897.fly.dev/pay/result?sid=${encodeURIComponent(sid)}&t=${Date.now()}';
+        const res = await fetch(url, { cache: "no-store" });
+        if (!res.ok) throw new Error('HTTP ${res.status}');
+        const data = await res.json();
+        // DEBUG (pode deixar por enquanto)
+        console.log("[pay/result]", data);
+        // ✅ Aceita tanto paid:true quanto status:"PAID"
+        const isPaid =
+            data.paid === true ||
+            (typeof data.status === "string" && data.status.toUpperCase() === "PAID");
+        return { isPaid, data };
         }
         function showPaid(downloadUrl) {
         $statusTitle.textContent = "Pagamento confirmado.";
