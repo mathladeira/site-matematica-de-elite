@@ -119,7 +119,6 @@
         function startPolling(reset=false) {
         if (reset) { tries = 0; }
         if (timer) { clearTimeout(timer); }
-
         showWaiting();
         poll();
         }
@@ -128,7 +127,8 @@
         try {
             const data = await checkPaymentOnce();
             if (data && data.paid && data.download_url) {
-            showPaid(data.download_url);
+            stopPolling();
+            window.location.href = data.download_url;
             return;
             }
             showWaiting();
@@ -142,6 +142,10 @@
             console.error(err);
         }
         }
+        console.log("SID:", sid);
+        console.log("Calling:", `${BACKEND}/pay/result?sid=${sid}`);
+        console.log("HTTP:", res.status);
+        console.log("DATA:", data);
     </script>
 </body>
 </html>
