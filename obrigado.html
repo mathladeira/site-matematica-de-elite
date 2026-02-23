@@ -84,9 +84,9 @@
         startPolling();
         }
         async function checkPaymentOnce(sid) {
-        const url = 'https://sitebackend-wandering-flower-7897.fly.dev/pay/result?sid=${encodeURIComponent(sid)}&t=${Date.now()}';
+        const url = `https://sitebackend-wandering-flower-7897.fly.dev/pay/result?sid=${encodeURIComponent(sid)}&t=${Date.now()}`;
         const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error('HTTP ${res.status}');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         // DEBUG (pode deixar por enquanto)
         console.log("[pay/result]", data);
@@ -125,11 +125,11 @@
         async function poll() {
         tries += 1;
         try {
-            const data = await checkPaymentOnce();
-            if (data && data.paid && data.download_url) {
-            stopPolling();
-            window.location.href = data.download_url;
-            return;
+            const { isPaid, data } = await checkPaymentOnce(sid);
+            if (isPaid && data.download_url) {
+                stopPolling();
+                window.location.href = data.download_url;
+                return;
             }
             showWaiting();
             if (tries < 24) {
@@ -142,10 +142,6 @@
             console.error(err);
         }
         }
-        console.log("SID:", sid);
-        console.log("Calling:", `${BACKEND}/pay/result?sid=${sid}`);
-        console.log("HTTP:", res.status);
-        console.log("DATA:", data);
     </script>
 </body>
 </html>
