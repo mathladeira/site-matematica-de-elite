@@ -62,86 +62,108 @@
     </footer>
     <!-- SCRIPT QUE CHAMA O BACKEND -->
     <script>
-        document.getElementById("year").textContent = new Date().getFullYear();
+        (() => {
         const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
-        let tries = 0;
-        let timer = null;
-        const $statusTitle = document.getElementById("statusTitle");
-        const $statusText  = document.getElementById("statusText");
-        const $downloadBtn = document.getElementById("downloadBtn");
-        const $retryBtn    = document.getElementById("retryBtn");
-        const $sidBox      = document.getElementById("sidBox");
-        const params = new URLSearchParams(window.location.search);
-        const sid = params.get("sid");
-        if (!sid) {
-        $statusTitle.textContent = "Ops… faltou o código do pedido.";
-        $statusText.textContent = "Volte para o site e tente novamente. Se precisar, me chame no WhatsApp.";
-        $retryBtn.style.display = "inline-flex";
-        $retryBtn.onclick = (e) => { e.preventDefault(); location.href = "index.html"; };
-        } else {
-        $sidBox.style.display = "block";
-        $sidBox.textContent = `Código do pedido: ${sid}`;
-        startPolling();
+
+        const elStatus = document.getElementById("statusText");      // se existir
+        const elBoxPaid = document.getElementById("paidBox");        // se existir
+        const elBtn = document.getElementById("downloadBtn");        // se existir
+        const elCode = document.getElementById("orderCode");         // se existir
+
+        function setText(txt) {
+            if (elStatus) elStatus.textContent = txt;
+            console.log("[OBRIGADO]", txt);
         }
-        async function checkPaymentOnce(sid) {
-        const url = `https://sitebackend-wandering-flower-7897.fly.dev/pay/result?sid=${encodeURIComponent(sid)}&t=${Date.now()}`;
-        const res = await fetch(url, { cache: "no-store" });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        // DEBUG (pode deixar por enquanto)
-        console.log("[pay/result]", data);
-        // ✅ Aceita tanto paid:true quanto status:"PAID"
-        const isPaid =
-            data.paid === true ||
-            (typeof data.status === "string" && data.status.toUpperCase() === "PAID");
-        return { isPaid, data };
+
+        function getSid() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("sid");
         }
-        function showPaid(downloadUrl) {
-        $statusTitle.textContent = "Pagamento confirmado.";
-        $statusText.textContent = "Seu download está liberado. Se quiser baixar depois, salve este link.";
-        $downloadBtn.href = downloadUrl;
-        $downloadBtn.style.display = "inline-flex";
-        $retryBtn.style.display = "none";
-        }
-        function showWaiting() {
-        $statusTitle.textContent = "Confirmando…";
-        $statusText.textContent = "Aguarde alguns segundos. Estamos consultando o status do pagamento.";
-        $downloadBtn.style.display = "none";
-        $retryBtn.style.display = "none";
-        }
-        function showError(message) {
-        $statusTitle.textContent = "Não consegui confirmar agora.";
-        $statusText.textContent = message;
-        $downloadBtn.style.display = "none";
-        $retryBtn.style.display = "inline-flex";
-        $retryBtn.onclick = (e) => { e.preventDefault(); startPolling(true); };
-        }
-        function startPolling(reset=false) {
-        if (reset) { tries = 0; }
-        if (timer) { clearTimeout(timer); }
-        showWaiting();
-        poll();
-        }
-        async function poll() {
-        tries += 1;
-        try {
-            const { isPaid, data } = await checkPaymentOnce(sid);
-            if (isPaid && data.download_url) {
-                stopPolling();
-                window.location.href = data.download_url;
-                return;
+
+        async function checkOnce(sid) {
+            const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
+            const resp = await fetch(url, { method: "GET", cache: "no-store" });
+
+            // se der ruim, mostra motivo (ajuda MUITO debug)
+            if (!resp.ok) {
+            const txt = await resp.text();
+            throw new Error(`HTTP ${resp.status} - ${txt.slice(0, 200)}`);
             }
-            showWaiting();
-            if (tries < 24) {
-            timer = setTimeout(poll, 2500);
+            return await resp.json();
+        }
+
+        async function pollPaid(sid, { intervalMs = 2000, timeoutMs = 90000 } = {}) {
+            const t0 = Date.now();
+
+            while (Date.now() - t0 < timeoutMs) {
+            try {
+                const data = await checkOnce(sid);
+
+                // log pra você ver em tempo real no console
+                console.log("[PAY RESULT]", data);
+
+                if (data.paid) return data;
+
+                setText(`Confirmando pagamento… (status: ${data.status || "?"})`);
+            } catch (e) {
+                console.warn("[POLL ERROR]", e);
+                setText("Confirmando pagamento… (erro temporário ao consultar)");
+            }
+
+            await new Promise(r => setTimeout(r, intervalMs));
+            }
+
+            return { paid: false, timeout: true };
+        }
+
+        async function main() {
+            const sid = getSid();
+            if (!sid) {
+            setText("Erro: sid ausente na URL.");
+            return;
+            }
+
+            // se você mostra o código na tela
+            if (elCode) elCode.textContent = sid;
+
+            setText("Confirmando pagamento…");
+
+            const res = await pollPaid(sid);
+
+            if (res.paid) {
+            setText("Pagamento confirmado ✅ Seu download está liberado.");
+
+            // Mostra botão/link do download
+            if (elBtn) {
+                elBtn.style.display = "inline-block";
+                elBtn.href = res.download_url;
+                elBtn.target = "_blank";
+                elBtn.rel = "noopener";
             } else {
-            showError("Se você já pagou, clique em “Tentar novamente”. Se continuar, me chame no WhatsApp.");
+                // fallback caso você não tenha botão: cria um link na página
+                const a = document.createElement("a");
+                a.href = res.download_url;
+                a.textContent = "Baixar material";
+                a.style.display = "inline-block";
+                a.style.marginTop = "12px";
+                a.target = "_blank";
+                a.rel = "noopener";
+                document.body.appendChild(a);
             }
-        } catch (err) {
-            showError("Pode ser um bloqueio de segurança do navegador (CORS) ou instabilidade. Clique em “Tentar novamente”.");
-            console.error(err);
+
+            if (elBoxPaid) elBoxPaid.style.display = "block";
+            return;
+            }
+
+            if (res.timeout) {
+            setText("Ainda confirmando… Clique em recarregar em alguns segundos.");
+            } else {
+            setText("Pagamento ainda não confirmado.");
+            }
         }
-        }
+
+        document.addEventListener("DOMContentLoaded", main);
+        })();
     </script>
 </body>
 </html>
