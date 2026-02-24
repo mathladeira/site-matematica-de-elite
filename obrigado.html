@@ -136,6 +136,12 @@
                     if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
                     setTitle("Link expirado");
                     setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, mande-nos uma mensagem no WhatsApp.");
+                    // botão chamar no whatsapp //
+                    elBtnDownload.style.display = "flex";
+                    elBtnDownload.textContent = "Chamar no WhatsApp";
+                    elBtnDownload.href = res.download_url;
+                    elBtnDownload.target = "_blank";
+                    elBtnDownload.rel = "noopener";
                 }
                 return;
             }
