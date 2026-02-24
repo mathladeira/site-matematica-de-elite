@@ -68,114 +68,152 @@
         const yearEl = document.getElementById("year");
         const elMainTitle = document.getElementById("MainTitle");
         const elSubtitle = document.getElementById("subtitle");
+
         const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
+
         const elTitle = document.getElementById("statusTitle");
         const elText = document.getElementById("statusText");
+
         const elBtnDownload = document.getElementById("downloadBtn");
-        const elBtnWhatsappDefault = document.getElementById("whatsappDefaultBtn");
         const elWhatsAppDefault = document.getElementById("whatsappDefaultBtn");
         const elWhatsAppPrimary = document.getElementById("whatsappPrimaryBtn");
+
         function setTitle(txt) {
             if (elTitle) elTitle.textContent = txt;
         }
+
         function setText(txt) {
             if (elText) elText.textContent = txt;
             console.log("[OBRIGADO]", txt);
         }
+
         function getSid() {
             const params = new URLSearchParams(window.location.search);
             return params.get("sid");
         }
+
         async function checkOnce(sid) {
             const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
             const resp = await fetch(url, { method: "GET", cache: "no-store" });
             if (!resp.ok) {
-                const txt = await resp.text();
-                throw new Error(`HTTP ${resp.status} - ${txt.slice(0, 200)}`);
+            const txt = await resp.text();
+            throw new Error(`HTTP ${resp.status} - ${txt.slice(0, 200)}`);
             }
             return await resp.json();
         }
+
         async function pollStatus(sid, { intervalMs = 2000, timeoutMs = 60000 } = {}) {
             const t0 = Date.now();
             while (Date.now() - t0 < timeoutMs) {
             try {
                 const data = await checkOnce(sid);
                 console.log("[PAY RESULT]", data);
+
                 if (data.state === "paid" || data.state === "failed") {
                 return data;
                 }
+
                 setTitle(data.title || "Confirmando...");
                 setText(data.message || "Estamos verificando o pagamento.");
+
             } catch (e) {
                 console.warn("[POLL ERROR]", e);
                 setText("Erro temporário ao consultar pagamento.");
             }
+
             await new Promise(r => setTimeout(r, intervalMs));
             }
+
             return { state: "pending", timeout: true };
         }
+
         async function main() {
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+
             const sid = getSid();
             if (!sid) {
-                setTitle("Erro");
-                setText("Identificador de pedido ausente.");
-                return;
+            if (elMainTitle) elMainTitle.textContent = "Erro";
+            if (elSubtitle) elSubtitle.textContent = "Não foi possível identificar o pedido.";
+            setTitle("Erro");
+            setText("Identificador de pedido ausente.");
+            return;
             }
+
+            // Estado inicial neutro
+            if (elMainTitle) elMainTitle.textContent = "Verificando pagamento...";
+            if (elSubtitle) elSubtitle.textContent = "Aguarde alguns instantes.";
+
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
+
             const res = await pollStatus(sid);
-            // PAGAMENTO CONFIRMADO //
+
+            // === PAID ===
             if (res.state === "paid") {
-                if (res.download_url) {
-                    if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
-                    if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
-                    setTitle("Pagamento confirmado");
-                    setText("Seu pagamento foi aprovado com segurança. O download já está disponível.");
-                    elBtnDownload.style.display = "flex";
-                    elBtnDownload.textContent = "Baixar material";
-                    elBtnDownload.href = res.download_url;
-                    elBtnDownload.target = "_blank";
-                    elBtnDownload.rel = "noopener";
-                    if (elBtnWhatsappDefault) {
-                        elBtnWhatsappDefault.style.display = "flex";
-                    }
-                    if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
-                    if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+
+            // 🔵 Token válido: download liberado
+            if (res.download_url) {
+                if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
+                if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
+
+                setTitle("Pagamento confirmado");
+                setText("Seu pagamento foi aprovado com segurança. O download já está disponível.");
+
+                if (elBtnDownload) {
+                elBtnDownload.style.display = "flex";
+                elBtnDownload.textContent = "Baixar material";
+                elBtnDownload.href = res.download_url;
+                elBtnDownload.target = "_blank";
+                elBtnDownload.rel = "noopener";
                 }
-            }
-                // LINK EXPIRADO OU AUSENTE //
-                else {
-                    if (elMainTitle) elMainTitle.textContent = "Link expirado";
-                    if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
-                    setTitle("Link expirado");
-                    setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, entre em contato pelo WhatsApp.");
-                    // 🔴 Esconde botão de download //
-                    elBtnDownload.style.display = "none";
-                    // 🔴 Esconde WhatsApp padrão //
-                    if (elWhatsAppDefault) {
-                        elWhatsAppDefault.style.display = "none";
-                    }
-                    // 🔵 Cria botão WhatsApp em destaque usando o botão primary //
-                    if (elWhatsAppPrimary) {
-                        elWhatsAppPrimary.style.display = "flex";
-                }
+
+                if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
+                if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+
                 return;
             }
-                // FALHA NO PAGAMENTO //
-                if (res.state === "failed") {
-                    if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
-                    if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
-                    setTitle("Pagamento não confirmado");
-                    setText("Se o pagamento foi feito, aguarde alguns instantes ou entre em contato no WhatsApp.");
-                    return;
-                }
-                if (res.state === "pending") {
-                    if (elMainTitle) elMainTitle.textContent = "Confirmando pagamento";
-                    if (elSubtitle) elSubtitle.textContent = "Estamos verificando sua transação.";
-                    setTitle("Confirmando...");
-                    setText("Se você pagou via PIX, pode levar alguns instantes.");
-                }
+
+            // 🔴 Token expirado: WhatsApp azul
+            if (elMainTitle) elMainTitle.textContent = "Link expirado";
+            if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
+
+            setTitle("Link expirado");
+            setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, entre em contato pelo WhatsApp.");
+
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "flex";
+
+            return;
+            }
+
+            // === FAILED ===
+            if (res.state === "failed") {
+            if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
+            if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
+
+            setTitle("Pagamento não confirmado");
+            setText("O pagamento não foi aprovado. Você pode tentar novamente ou chamar no WhatsApp.");
+
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
+
+            return;
+            }
+
+            // === PENDING (inclui timeout) ===
+            if (elMainTitle) elMainTitle.textContent = "Confirmando pagamento...";
+            if (elSubtitle) elSubtitle.textContent = "Estamos verificando sua transação.";
+
+            setTitle("Confirmando...");
+            setText("Se você pagou via PIX, pode levar alguns instantes. Atualize a página em breve.");
+
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
         }
+
         document.addEventListener("DOMContentLoaded", main);
         })();
     </script>
