@@ -696,7 +696,7 @@ button.btn {
 
   /* FORMATA O CARD DE PRODUTO COM APENAS UM BOTÃO (ESCONDE O SEGUNDO BOTÃO E REMOVE A MARGEM DO PRIMEIRO) */
 .product-card .btn[style*="display: none"] + .btn {
-  margin-top: 2000px;
+  margin-top: 0;
 }
 .product-card{
   display: flex;
