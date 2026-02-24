@@ -119,57 +119,41 @@
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
             const res = await pollStatus(sid);
+            // PAGAMENTO CONFIRMADO //
             if (res.state === "paid") {
-
                 if (res.download_url) {
-
                     if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
                     if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
-
                     setTitle("Pagamento confirmado");
                     setText("Seu pagamento foi aprovado com segurança. O download já está disponível.");
-
-                    elBtnDownload.style.display = "inline-block";
+                    elBtnDownload.style.display = "flex";
                     elBtnDownload.textContent = "Baixar material";
                     elBtnDownload.href = res.download_url;
                     elBtnDownload.target = "_blank";
                     elBtnDownload.rel = "noopener";
-
-                } else {
-
+                }
+                // LINK EXPIRADO OU AUSENTE //
+                else {
                     if (elMainTitle) elMainTitle.textContent = "Link expirado";
                     if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
-
                     setTitle("Link expirado");
-                    setText("Por segurança, o link de download expirou. Gere um novo acesso abaixo.");
-
-                    elBtnDownload.style.display = "inline-block";
-                    elBtnDownload.textContent = "Gerar novo link";
-                    elBtnDownload.href = "#";
+                    setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, mande-nos uma mensagem no WhatsApp ou via email.");
                 }
-
-                return; // ⛔ IMPORTANTE — impede sobrescrever depois
-                }
-
-                if (res.state === "failed") {
-
-                if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
-                if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
-
-                setTitle("Pagamento não confirmado");
-                setText("Se o pagamento foi feito, aguarde alguns instantes ou entre em contato.");
-
                 return;
+            }
+                // FALHA NO PAGAMENTO //
+                if (res.state === "failed") {
+                    if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
+                    if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
+                    setTitle("Pagamento não confirmado");
+                    setText("Se o pagamento foi feito, aguarde alguns instantes ou entre em contato no WhatsApp ou via email.");
+                    return;
                 }
-
-                // Só aqui é pending
                 if (res.state === "pending") {
-
-                if (elMainTitle) elMainTitle.textContent = "Confirmando pagamento";
-                if (elSubtitle) elSubtitle.textContent = "Estamos verificando sua transação.";
-
-                setTitle("Confirmando...");
-                setText("Se você pagou via PIX, pode levar alguns instantes.");
+                    if (elMainTitle) elMainTitle.textContent = "Confirmando pagamento";
+                    if (elSubtitle) elSubtitle.textContent = "Estamos verificando sua transação.";
+                    setTitle("Confirmando...");
+                    setText("Se você pagou via PIX, pode levar alguns instantes.");
                 }
             // TIMEOUT OU AINDA PENDENTE //
             setTitle("Ainda confirmando...");
