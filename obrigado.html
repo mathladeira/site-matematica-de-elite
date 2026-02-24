@@ -125,7 +125,7 @@
             if (elMainTitle) elMainTitle.textContent = res.title || "Pagamento confirmado";
             if (elSubtitle) elSubtitle.textContent = res.message || "Seu download está liberado.";
             if (elBtnDownload && res.download_url) {
-                elBtnDownload.style.display = "inline-block";
+                elBtnDownload.style.display = "flex";
                 elBtnDownload.textContent = res.cta_label || "Baixar material";
                 elBtnDownload.href = res.download_url;
                 elBtnDownload.target = "_blank";

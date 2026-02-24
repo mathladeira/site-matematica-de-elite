@@ -693,9 +693,3 @@ button.btn {
         display: inline-block;
         min-width: 3.2ch;
     }
-#downloadBtn.btn-primary {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 1;
-}
