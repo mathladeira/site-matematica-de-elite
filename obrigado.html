@@ -42,8 +42,8 @@
                             <a class="btn btn-ghost" id="backBtn" href="index.html" style="margin-top:12px;">
                                 Voltar ao site
                             </a>
-                            <!-- BOTÃO CHAMAR NO WHATSAPP -->
-                            <a class="btn btn-ghost" id="backBtn" href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Estou%20tendo%20problemas%20na%20compra%20do%20seu%20livro%20e%20preciso%20de%20assistência." style="margin-top:12px;">
+                            <a class="btn btn-ghost" id="whatsappDefaultBtn"
+                            href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Estou%20tendo%20problemas%20na%20compra%20do%20seu%20livro%20e%20preciso%20de%20assistência.">
                                 Chamar no WhatsApp
                             </a>
                         </article>
@@ -68,6 +68,7 @@
         const elTitle = document.getElementById("statusTitle");
         const elText = document.getElementById("statusText");
         const elBtnDownload = document.getElementById("downloadBtn");
+        const elBtnWhatsappDefault = document.getElementById("whatsappDefaultBtn");
         function setTitle(txt) {
             if (elTitle) elTitle.textContent = txt;
         }
@@ -129,17 +130,26 @@
                     elBtnDownload.href = res.download_url;
                     elBtnDownload.target = "_blank";
                     elBtnDownload.rel = "noopener";
+                    if (elBtnWhatsappDefault) {
+                        elBtnWhatsappDefault.style.display = "flex";
+                    }
                 }
                 // LINK EXPIRADO OU AUSENTE //
                 else {
                     if (elMainTitle) elMainTitle.textContent = "Link expirado";
                     if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
                     setTitle("Link expirado");
-                    setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, mande-nos uma mensagem no WhatsApp.");
-                    // botão chamar no whatsapp //
+                    setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, entre em contato pelo WhatsApp.");
+                    // 🔴 Esconde botão de download //
+                    elBtnDownload.style.display = "none";
+                    // 🔴 Esconde WhatsApp padrão //
+                    if (elWhatsAppDefault) {
+                        elWhatsAppDefault.style.display = "none";
+                    }
+                    // 🔵 Cria botão WhatsApp em destaque usando o botão primary //
                     elBtnDownload.style.display = "flex";
                     elBtnDownload.textContent = "Chamar no WhatsApp";
-                    elBtnDownload.href = res.download_url;
+                    elBtnDownload.href = "https://wa.me/5591985430575?text=Ol%C3%A1%21%20Meu%20link%20de%20download%20expirou%20e%20preciso%20de%20ajuda.";
                     elBtnDownload.target = "_blank";
                     elBtnDownload.rel = "noopener";
                 }
