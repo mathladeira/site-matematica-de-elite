@@ -85,8 +85,8 @@
             const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
             const resp = await fetch(url, { method: "GET", cache: "no-store" });
             if (!resp.ok) {
-            const txt = await resp.text();
-            throw new Error(`HTTP ${resp.status} - ${txt.slice(0, 200)}`);
+                const txt = await resp.text();
+                throw new Error(`HTTP ${resp.status} - ${txt.slice(0, 200)}`);
             }
             return await resp.json();
         }
@@ -119,23 +119,53 @@
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
             const res = await pollStatus(sid);
+            // SE PAGO OK //
             if (res.state === "paid") {
+                if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
+                if (elSubtitle) elSubtitle.textContent = "Seu acesso foi liberado com sucesso.";
                 setTitle(res.title || "Pagamento confirmado");
-                setText(res.message || "Seu download está liberado.");
-            if (elMainTitle) elMainTitle.textContent = res.title || "Pagamento confirmado";
-            if (elSubtitle) elSubtitle.textContent = res.message || "Seu download está liberado.";
-            if (elBtnDownload && res.download_url) {
-                elBtnDownload.style.display = "flex";
-                elBtnDownload.textContent = res.cta_label || "Baixar material";
-                elBtnDownload.href = res.download_url;
-                elBtnDownload.target = "_blank";
-                elBtnDownload.rel = "noopener";
-            }
-            return;
+                setText(res.message || "Seu download está disponível.");
+                // 🔵 SE AINDA EXISTE DOWNLOAD_URL, TOKEN VÁLIDO //
+                if (res.download_url) {
+                    elBtnDownload.style.display = "inline-block";
+                    elBtnDownload.textContent = res.cta_label || "Baixar material";
+                    elBtnDownload.href = res.download_url;
+                    elBtnDownload.target = "_blank";
+                    elBtnDownload.rel = "noopener";
+                    return;
+                }
+                // 🔴 SE NÃO EXISTE DOWNLOAD_URL, TOKEN EXPIROU //
+                elBtnDownload.style.display = "inline-block";
+                elBtnDownload.textContent = "Gerar novo link";
+                elBtnDownload.href = "#";
+                elBtnDownload.onclick = async function (e) {
+                    e.preventDefault();
+                    elBtnDownload.textContent = "Gerando...";
+                    elBtnDownload.disabled = true;
+                    try {
+                    const renewResp = await fetch(
+                        `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}&renew=1`,
+                        { method: "GET", cache: "no-store" }
+                    );
+                    const renewData = await renewResp.json();
+                    if (renewData.download_url) {
+                        elBtnDownload.textContent = "Baixar material";
+                        elBtnDownload.href = renewData.download_url;
+                        elBtnDownload.target = "_blank";
+                        elBtnDownload.disabled = false;
+                    } else {
+                        elBtnDownload.textContent = "Erro ao gerar link";
+                    }
+                    } catch (err) {
+                    console.error(err);
+                    elBtnDownload.textContent = "Erro. Tente novamente";
+                    elBtnDownload.disabled = false;
+                    }
+                };
             }
             if (res.state === "failed") {
-            setTitle(res.title || "Pagamento não confirmado");
-            setText(res.message || "O pagamento não foi aprovado.");
+                setTitle(res.title || "Pagamento não confirmado");
+                setText(res.message || "O pagamento não foi aprovado.");
             return;
             }
             // Timeout ou ainda pendente
