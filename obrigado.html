@@ -25,8 +25,8 @@
     <main>
         <section class="section">
             <div class="container">
-                <h1 id="MainTitle">Quase lá...</h1>
-                <p id="subtitle">Estamos confirmando seu pagamento com segurança.</p>
+                <h1 id="MainTitle"></h1>
+                <p id="subtitle"></p>
                 <!-- SEÇÃO DE STATUS DO PAGAMENTO -->
                 <div class="products" aria-label="Status do pagamento">
                     <div class="product-grid" style="grid-template-columns: 1fr;">
@@ -119,22 +119,26 @@
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
             const res = await pollStatus(sid);
-            // SE PAGO OK //
+            // MONTA O COPYWRITING DA PÁGINA DEPENDENDO DO RESULTADO DO PAGAMENTO //
             if (res.state === "paid") {
-                if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
-                if (elSubtitle) elSubtitle.textContent = "Seu acesso foi liberado com sucesso.";
-                setTitle(res.title || "Pagamento confirmado");
-                setText(res.message || "Seu download está disponível.");
-                // 🔵 SE AINDA EXISTE DOWNLOAD_URL, TOKEN VÁLIDO //
+                // 🔵 CASO 1: TOKEN AINDA VÁLIDO //
                 if (res.download_url) {
+                    if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
+                    if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
+                    setTitle("Pagamento confirmado");
+                    setText("Seu pagamento foi aprovado com segurança. O download já está disponível.");
                     elBtnDownload.style.display = "inline-block";
-                    elBtnDownload.textContent = res.cta_label || "Baixar material";
+                    elBtnDownload.textContent = "Baixar material";
                     elBtnDownload.href = res.download_url;
                     elBtnDownload.target = "_blank";
                     elBtnDownload.rel = "noopener";
                     return;
                 }
-                // 🔴 SE NÃO EXISTE DOWNLOAD_URL, TOKEN EXPIROU //
+                // 🔴 CASO 2: TOKEN EXPIRADO //
+                if (elMainTitle) elMainTitle.textContent = "Link expirado";
+                if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
+                setTitle("Link expirado");
+                setText("Por segurança, o link de download expirou. Gere um novo acesso abaixo.");
                 elBtnDownload.style.display = "inline-block";
                 elBtnDownload.textContent = "Gerar novo link";
                 elBtnDownload.href = "#";
@@ -149,12 +153,7 @@
                     );
                     const renewData = await renewResp.json();
                     if (renewData.download_url) {
-                        elBtnDownload.textContent = "Baixar material";
-                        elBtnDownload.href = renewData.download_url;
-                        elBtnDownload.target = "_blank";
-                        elBtnDownload.disabled = false;
-                    } else {
-                        elBtnDownload.textContent = "Erro ao gerar link";
+                        window.location.reload();
                     }
                     } catch (err) {
                     console.error(err);
@@ -168,7 +167,7 @@
                 setText(res.message || "O pagamento não foi aprovado.");
             return;
             }
-            // Timeout ou ainda pendente
+            // TIMEOUT OU AINDA PENDENTE //
             setTitle("Ainda confirmando...");
             setText("Se você pagou via PIX, pode levar alguns instantes. Atualize a página em breve.");
         }
