@@ -119,54 +119,58 @@
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
             const res = await pollStatus(sid);
-            // MONTA O COPYWRITING DA PÁGINA DEPENDENDO DO RESULTADO DO PAGAMENTO //
             if (res.state === "paid") {
-                // 🔵 CASO 1: TOKEN AINDA VÁLIDO //
+
                 if (res.download_url) {
+
                     if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
                     if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
+
                     setTitle("Pagamento confirmado");
                     setText("Seu pagamento foi aprovado com segurança. O download já está disponível.");
-                    elBtnDownload.style.display = "flex";
+
+                    elBtnDownload.style.display = "inline-block";
                     elBtnDownload.textContent = "Baixar material";
                     elBtnDownload.href = res.download_url;
                     elBtnDownload.target = "_blank";
                     elBtnDownload.rel = "noopener";
-                    return;
+
+                } else {
+
+                    if (elMainTitle) elMainTitle.textContent = "Link expirado";
+                    if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
+
+                    setTitle("Link expirado");
+                    setText("Por segurança, o link de download expirou. Gere um novo acesso abaixo.");
+
+                    elBtnDownload.style.display = "inline-block";
+                    elBtnDownload.textContent = "Gerar novo link";
+                    elBtnDownload.href = "#";
                 }
-                // 🔴 CASO 2: TOKEN EXPIRADO //
-                if (elMainTitle) elMainTitle.textContent = "Link expirado";
-                if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
-                setTitle("Link expirado");
-                setText("Por segurança, o link de download expirou. Gere um novo acesso abaixo.");
-                elBtnDownload.style.display = "flex";
-                elBtnDownload.textContent = "Gerar novo link";
-                elBtnDownload.href = "#";
-                elBtnDownload.onclick = async function (e) {
-                    e.preventDefault();
-                    elBtnDownload.textContent = "Gerando...";
-                    elBtnDownload.disabled = true;
-                    try {
-                    const renewResp = await fetch(
-                        `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}&renew=1`,
-                        { method: "GET", cache: "no-store" }
-                    );
-                    const renewData = await renewResp.json();
-                    if (renewData.download_url) {
-                        window.location.reload();
-                    }
-                    } catch (err) {
-                    console.error(err);
-                    elBtnDownload.textContent = "Erro. Tente novamente";
-                    elBtnDownload.disabled = false;
-                    }
-                };
-            }
-            if (res.state === "failed") {
-                setTitle(res.title || "Pagamento não confirmado");
-                setText(res.message || "O pagamento não foi aprovado.");
-            return;
-            }
+
+                return; // ⛔ IMPORTANTE — impede sobrescrever depois
+                }
+
+                if (res.state === "failed") {
+
+                if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
+                if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
+
+                setTitle("Pagamento não confirmado");
+                setText("Se o pagamento foi feito, aguarde alguns instantes ou entre em contato.");
+
+                return;
+                }
+
+                // Só aqui é pending
+                if (res.state === "pending") {
+
+                if (elMainTitle) elMainTitle.textContent = "Confirmando pagamento";
+                if (elSubtitle) elSubtitle.textContent = "Estamos verificando sua transação.";
+
+                setTitle("Confirmando...");
+                setText("Se você pagou via PIX, pode levar alguns instantes.");
+                }
             // TIMEOUT OU AINDA PENDENTE //
             setTitle("Ainda confirmando...");
             setText("Se você pagou via PIX, pode levar alguns instantes. Atualize a página em breve.");
