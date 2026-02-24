@@ -127,7 +127,7 @@
                     if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
                     setTitle("Pagamento confirmado");
                     setText("Seu pagamento foi aprovado com segurança. O download já está disponível.");
-                    elBtnDownload.style.display = "inline-block";
+                    elBtnDownload.style.display = "flex";
                     elBtnDownload.textContent = "Baixar material";
                     elBtnDownload.href = res.download_url;
                     elBtnDownload.target = "_blank";
@@ -139,7 +139,7 @@
                 if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
                 setTitle("Link expirado");
                 setText("Por segurança, o link de download expirou. Gere um novo acesso abaixo.");
-                elBtnDownload.style.display = "inline-block";
+                elBtnDownload.style.display = "flex";
                 elBtnDownload.textContent = "Gerar novo link";
                 elBtnDownload.href = "#";
                 elBtnDownload.onclick = async function (e) {
