@@ -693,3 +693,13 @@ button.btn {
         display: inline-block;
         min-width: 3.2ch;
     }
+
+  /* FORMATA O CARD DE PRODUTO COM APENAS UM BOTÃO (ESCONDE O SEGUNDO BOTÃO E REMOVE A MARGEM DO PRIMEIRO) */
+.product-card .btn[style*="display: none"] + .btn {
+  margin-top: 0;
+}
+.product-card{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
