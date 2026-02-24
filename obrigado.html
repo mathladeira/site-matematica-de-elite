@@ -36,14 +36,18 @@
                                 Estamos consultando o status da sua trnsação.
                             </p>
                             <p class="product-note" id="sidBox" style="display:none;"></p>
-                            <!-- BOTÃO BAIXAR MEU LIVRO -->
+                            <!-- BOTÃO BAIXAR MATERIAL -->
                             <a class="btn btn-primary" id="downloadBtn" style="display:none;" rel="noopener noreferrer"></a>
+                            <!-- BOTÃO WHATSAPP EM DESTAQUE (AZUL) -->
+                            <a class="btn btn-primary" id="whatsappPrimaryBtn" href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Meu%20link%20de%20download%20expirou%20e%20preciso%20de%20ajuda." target="_blank" rel="noopener" style="display:none;">
+                                Chamar no WhatsApp
+                            </a>
                             <!-- BOTÃO VOLTAR AO SITE -->
-                            <a class="btn btn-ghost" id="backBtn" href="index.html" style="margin-top:12px;">
+                            <a class="btn btn-ghost" id="backBtn" href="index.html">
                                 Voltar ao site
                             </a>
-                            <a class="btn btn-ghost" id="whatsappDefaultBtn"
-                            href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Estou%20tendo%20problemas%20na%20compra%20do%20seu%20livro%20e%20preciso%20de%20assistência.">
+                            <!-- BOTÃO WHATSAPP PADRÃO -->
+                            <a class="btn btn-ghost" id="whatsappDefaultBtn" href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Estou%20tendo%20problemas%20na%20compra%20do%20seu%20livro%20e%20preciso%20de%20assistência.">
                                 Chamar no WhatsApp
                             </a>
                         </article>
@@ -69,6 +73,8 @@
         const elText = document.getElementById("statusText");
         const elBtnDownload = document.getElementById("downloadBtn");
         const elBtnWhatsappDefault = document.getElementById("whatsappDefaultBtn");
+        const elWhatsAppDefault = document.getElementById("whatsappDefaultBtn");
+        const elWhatsAppPrimary = document.getElementById("whatsappPrimaryBtn");
         function setTitle(txt) {
             if (elTitle) elTitle.textContent = txt;
         }
@@ -133,7 +139,10 @@
                     if (elBtnWhatsappDefault) {
                         elBtnWhatsappDefault.style.display = "flex";
                     }
+                    if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
+                    if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
                 }
+            }
                 // LINK EXPIRADO OU AUSENTE //
                 else {
                     if (elMainTitle) elMainTitle.textContent = "Link expirado";
@@ -147,11 +156,8 @@
                         elWhatsAppDefault.style.display = "none";
                     }
                     // 🔵 Cria botão WhatsApp em destaque usando o botão primary //
-                    elBtnDownload.style.display = "flex";
-                    elBtnDownload.textContent = "Chamar no WhatsApp";
-                    elBtnDownload.href = "https://wa.me/5591985430575?text=Ol%C3%A1%21%20Meu%20link%20de%20download%20expirou%20e%20preciso%20de%20ajuda.";
-                    elBtnDownload.target = "_blank";
-                    elBtnDownload.rel = "noopener";
+                    if (elWhatsAppPrimary) {
+                        elWhatsAppPrimary.style.display = "flex";
                 }
                 return;
             }
@@ -169,9 +175,6 @@
                     setTitle("Confirmando...");
                     setText("Se você pagou via PIX, pode levar alguns instantes.");
                 }
-            // TIMEOUT OU AINDA PENDENTE //
-            setTitle("Ainda confirmando...");
-            setText("Se você pagou via PIX, pode levar alguns instantes. Atualize a página em breve.");
         }
         document.addEventListener("DOMContentLoaded", main);
         })();
