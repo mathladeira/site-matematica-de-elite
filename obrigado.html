@@ -25,7 +25,7 @@
     <main>
         <section class="section">
             <div class="container">
-                <h1>Quase lá...</h1>
+                <h1 id="MainTitle">Quase lá...</h1>
                 <p id="subtitle">Estamos confirmando seu pagamento com segurança.</p>
                 <!-- SEÇÃO DE STATUS DO PAGAMENTO -->
                 <div class="products" aria-label="Status do pagamento">
@@ -63,6 +63,9 @@
     <!-- SCRIPT QUE CHAMA O BACKEND -->
     <script>
         (() => {
+        const yearEl = document.getElementById("year");
+        const elMainTitle = document.getElementById("MainTitle");
+        const elSubtitle = document.getElementById("subtitle");
         const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
         const elTitle = document.getElementById("statusTitle");
         const elText = document.getElementById("statusText");
@@ -109,16 +112,18 @@
         async function main() {
             const sid = getSid();
             if (!sid) {
-            setTitle("Erro");
-            setText("Identificador de pedido ausente.");
-            return;
+                setTitle("Erro");
+                setText("Identificador de pedido ausente.");
+                return;
             }
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
             const res = await pollStatus(sid);
             if (res.state === "paid") {
-            setTitle(res.title || "Pagamento confirmado");
-            setText(res.message || "Seu download está liberado.");
+                setTitle(res.title || "Pagamento confirmado");
+                setText(res.message || "Seu download está liberado.");
+            if (elMainTitle) elMainTitle.textContent = res.title || "Pagamento confirmado";
+            if (elSubtitle) elSubtitle.textContent = res.message || "Seu download está liberado.";
             if (elBtnDownload && res.download_url) {
                 elBtnDownload.style.display = "inline-block";
                 elBtnDownload.textContent = res.cta_label || "Baixar material";
