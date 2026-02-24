@@ -31,15 +31,13 @@
                 <div class="products" aria-label="Status do pagamento">
                     <div class="product-grid" style="grid-template-columns: 1fr;">
                         <article class="product-card">
-                            <h3 class="product-title" id="statusTitle">Confirmando…</h3>
+                            <h3 class="product-title" id="statusTitle">Carregando…</h3>
                             <p class="product-desc" id="statusText">
-                                Se você acabou de pagar, isso pode levar alguns segundos.
+                                Estamos consultando o status da sua trnsação.
                             </p>
                             <p class="product-note" id="sidBox" style="display:none;"></p>
                             <!-- BOTÃO BAIXAR MEU LIVRO -->
-                            <a class="btn btn-primary" id="downloadBtn" href="#" style="display:none;" rel="noopener noreferrer">
-                                Baixar meu livro
-                            </a>
+                            <a class="btn btn-primary" id="downloadBtn" style="display:none;" rel="noopener noreferrer"></a>
                             <!-- BOTÃO VOLTAR AO SITE -->
                             <a class="btn btn-ghost" id="backBtn" href="index.html" style="margin-top:12px;">
                                 Voltar ao site
@@ -137,7 +135,7 @@
                     if (elMainTitle) elMainTitle.textContent = "Link expirado";
                     if (elSubtitle) elSubtitle.textContent = "Seu link anterior expirou por segurança.";
                     setTitle("Link expirado");
-                    setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, mande-nos uma mensagem no WhatsApp ou via email.");
+                    setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, mande-nos uma mensagem no WhatsApp.");
                 }
                 return;
             }
@@ -146,7 +144,7 @@
                     if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
                     if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
                     setTitle("Pagamento não confirmado");
-                    setText("Se o pagamento foi feito, aguarde alguns instantes ou entre em contato no WhatsApp ou via email.");
+                    setText("Se o pagamento foi feito, aguarde alguns instantes ou entre em contato no WhatsApp.");
                     return;
                 }
                 if (res.state === "pending") {
