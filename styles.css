@@ -693,3 +693,10 @@ button.btn {
         display: inline-block;
         min-width: 3.2ch;
     }
+
+/* FORMATA O CARD DE PRODUTO COM APENAS UM BOTÃO (ESCONDE O SEGUNDO BOTÃO E REMOVE A MARGEM DO PRIMEIRO) */
+.product-card .card-actions{
+  display: grid;
+  gap: 12px;
+  margin-top: 12px;
+}

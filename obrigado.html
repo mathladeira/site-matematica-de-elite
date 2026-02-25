@@ -25,29 +25,33 @@
     <main>
         <section class="section">
             <div class="container">
-                <h1>Quase lá...</h1>
-                <p id="subtitle">Estamos confirmando seu pagamento com segurança.</p>
+                <h1 id="MainTitle"></h1>
+                <p id="subtitle"></p>
                 <!-- SEÇÃO DE STATUS DO PAGAMENTO -->
                 <div class="products" aria-label="Status do pagamento">
                     <div class="product-grid" style="grid-template-columns: 1fr;">
                         <article class="product-card">
-                            <h3 class="product-title" id="statusTitle">Confirmando…</h3>
+                            <h3 class="product-title" id="statusTitle">Carregando…</h3>
                             <p class="product-desc" id="statusText">
-                                Se você acabou de pagar, isso pode levar alguns segundos.
+                                Estamos consultando o status da sua trnsação.
                             </p>
                             <p class="product-note" id="sidBox" style="display:none;"></p>
-                            <!-- BOTÃO BAIXAR MEU LIVRO -->
-                            <a class="btn btn-primary" id="downloadBtn" href="#" style="display:none;" rel="noopener noreferrer">
-                                Baixar meu livro
-                            </a>
-                            <!-- BOTÃO VOLTAR AO SITE -->
-                            <a class="btn btn-ghost" id="backBtn" href="index.html" style="margin-top:12px;">
-                                Voltar ao site
-                            </a>
-                            <!-- BOTÃO CHAMAR NO WHATSAPP -->
-                            <a class="btn btn-ghost" id="backBtn" href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Estou%20tendo%20problemas%20na%20compra%20do%20seu%20livro%20e%20preciso%20de%20assistência." style="margin-top:12px;">
-                                Chamar no WhatsApp
-                            </a>
+                            <div class="card-actions">
+                                <!-- BOTÃO BAIXAR MATERIAL -->
+                                <a class="btn btn-primary" id="downloadBtn" style="display:none;" rel="noopener noreferrer"></a>
+                                <!-- BOTÃO WHATSAPP EM DESTAQUE (AZUL) -->
+                                <a class="btn btn-primary" id="whatsappPrimaryBtn" href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Meu%20link%20de%20download%20expirou%20e%20preciso%20de%20ajuda." target="_blank" rel="noopener" style="display:none;">
+                                    Chamar no WhatsApp
+                                </a>
+                                <!-- BOTÃO VOLTAR AO SITE -->
+                                <a class="btn btn-ghost" id="backBtn" href="index.html">
+                                    Voltar ao site
+                                </a>
+                                <!-- BOTÃO WHATSAPP PADRÃO -->
+                                <a class="btn btn-ghost" id="whatsappDefaultBtn" href="https://wa.me/5591985430575?text=Ol%C3%A1%21%20Estou%20tendo%20problemas%20na%20compra%20do%20seu%20livro%20e%20preciso%20de%20assistência.">
+                                    Chamar no WhatsApp
+                                </a>
+                            </div>
                         </article>
                     </div>
                 </div>
@@ -62,84 +66,187 @@
     </footer>
     <!-- SCRIPT QUE CHAMA O BACKEND -->
     <script>
-        document.getElementById("year").textContent = new Date().getFullYear();
+        (() => {
+        const yearEl = document.getElementById("year");
+        const elMainTitle = document.getElementById("MainTitle");
+        const elSubtitle = document.getElementById("subtitle");
         const BACKEND_BASE = "https://sitebackend-wandering-flower-7897.fly.dev";
-        let tries = 0;
-        let timer = null;
-        const $statusTitle = document.getElementById("statusTitle");
-        const $statusText  = document.getElementById("statusText");
-        const $downloadBtn = document.getElementById("downloadBtn");
-        const $retryBtn    = document.getElementById("retryBtn");
-        const $sidBox      = document.getElementById("sidBox");
-        const params = new URLSearchParams(window.location.search);
-        const sid = params.get("sid");
-        if (!sid) {
-        $statusTitle.textContent = "Ops… faltou o código do pedido.";
-        $statusText.textContent = "Volte para o site e tente novamente. Se precisar, me chame no WhatsApp.";
-        $retryBtn.style.display = "inline-flex";
-        $retryBtn.onclick = (e) => { e.preventDefault(); location.href = "index.html"; };
-        } else {
-        $sidBox.style.display = "block";
-        $sidBox.textContent = `Código do pedido: ${sid}`;
-        startPolling();
+        const elTitle = document.getElementById("statusTitle");
+        const elText = document.getElementById("statusText");
+        const elBtnDownload = document.getElementById("downloadBtn");
+        const elWhatsAppDefault = document.getElementById("whatsappDefaultBtn");
+        const elWhatsAppPrimary = document.getElementById("whatsappPrimaryBtn");
+        function setTitle(txt) {
+            if (elTitle) elTitle.textContent = txt;
         }
-        async function checkPaymentOnce() {
-        const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
-        const res = await fetch(url, {
+        function setText(txt) {
+            if (elText) elText.textContent = txt;
+            console.log("[OBRIGADO]", txt);
+        }
+        function getSid() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("sid");
+        }
+        // ** //
+        async function headStatus(url){
+            const r = await fetch(url, { method: "HEAD", cache: "no-store" });
+            return r.status; // 200, 206, 410, etc
+        }
+        // ** //
+        function showExpiredUI() {
+            if (elMainTitle) elMainTitle.textContent = "Link expirado";
+            if (elSubtitle) elSubtitle.textContent = "Por segurança, o link de download expirou.";
+            setTitle("Link expirado");
+            setText("Por segurança, o link de download expirou. Se você já efetuou o pagamento, entre em contato pelo WhatsApp.");
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "flex";
+        }
+        // ** //
+        function bindDownloadButton(downloadUrl) {
+            if (!elBtnDownload) return;
+            // deixa o botão visível como você já faz
+            elBtnDownload.style.display = "flex";
+            elBtnDownload.textContent = "Baixar material";
+            elBtnDownload.href = downloadUrl;
+            // IMPORTANTÍSSIMO: não abrir direto em nova aba
+            // (senão você perde o controle e aparece "Gone")
+            elBtnDownload.removeAttribute("target");
+            // evita múltiplos binds se a função for chamada de novo
+            elBtnDownload.onclick = async (e) => {
+            e.preventDefault();
+            try {
+                const status = await headStatus(downloadUrl);
+                if (status === 410) {
+                showExpiredUI();
+                return;
+                }
+                // ok (200/206): segue com download
+                window.location.href = downloadUrl;
+            } catch (err) {
+                // se falhar HEAD por qualquer motivo, tenta baixar mesmo
+                window.location.href = downloadUrl;
+            }
+            };
+        }
+        async function checkOnce(sid) {
+            // CHAMA O BACKEND PARA VER O STATUS DO PAGAMENTO //
+            const url =
+            `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}` +
+            `&_=${Date.now()}`;
+            const resp = await fetch(url, {
             method: "GET",
+            cache: "no-store",
             headers: { "Accept": "application/json" }
-        });
-        if (!res.ok) {
-            throw new Error(`HTTP ${res.status}`);
+            });
+            if (!resp.ok) {
+            const txt = await resp.text();
+            throw new Error(`HTTP ${resp.status} - ${txt.slice(0, 200)}`);
+            }
+            const data = await resp.json();
+            console.log("[PAY RESULT]", data);
+            return data;
         }
-        return await res.json();
+        async function pollStatus(
+            sid,
+            { intervalMs = 2000, timeoutMs = 90000 } = {} // 90s
+        ) {
+            const t0 = Date.now();
+            let sawPaidWithoutLink = false;
+            while (Date.now() - t0 < timeoutMs) {
+            try {
+                const data = await checkOnce(sid);
+                // FAILED: SE O STATUS FOR FAILED, NÃO HÁ O QUE FAZER, SÓ INFORMAR O USUÁRIO. FALHA É FALHA, NÃO MELHORA COM O TEMPO. //
+                if (data.state === "failed") return data;
+                // PAID: SE O STATUS FOR PAGO, VERIFICA SE TEM LINK. SE TIVER, RETORNA IMEDIATAMENTE. SE NÃO TIVER, AVISA O USUÁRIO E CONTINUA POLL, POIS PODE SER UM CASO RARO DE PAGAMENTO APROVADO MAS LINK AINDA NÃO GERADO. //
+                if (data.state === "paid") {
+                const link =
+                    data.download_url || data.downloadUrl || null;
+                if (link) {
+                    data.download_url = link;
+                    return data;
+                }
+                // PAID MAS SEM LINK: MUITO RARO, MAS PODE ACONTECER. CONTINUA POLL, MAS AVISA O USUÁRIO E GUARDA O FATO DE TER VISTO ESSE ESTADO, PARA CASO DE TIMEOUT //
+                sawPaidWithoutLink = true;
+                setTitle("Pagamento confirmado");
+                setText("Seu pagamento foi aprovado. Estamos preparando seu link de download…");
+                } else {
+                // PENDING OU OUTRO ESTADO: ATUALIZA TEXTO E CONTINUA ESPERANDO //
+                setTitle(data.title || "Confirmando...");
+                setText(data.message || "Estamos verificando o pagamento.");
+                }
+            } catch (e) {
+                console.warn("[POLL ERROR]", e);
+                setText("Erro temporário ao consultar pagamento.");
+            }
+            await new Promise(r => setTimeout(r, intervalMs));
+            }
+            // TIMEOUT: SE CHEGOU AQUI, É PORQUE ESTOUROU O TEMPO DE ESPERA. PODE SER PENDING NORMAL OU PAID SEM LINK (CASO RARO). DAMOS O BENEFÍCIO DA DÚVIDA PRO CLIENTE, MAS ORIENTAMOS A ENTRAR EM CONTATO //
+            if (sawPaidWithoutLink) {
+            return { state: "paid", download_url: null, timeout: true };
+            }
+            return { state: "pending", timeout: true };
         }
-        function showPaid(downloadUrl) {
-        $statusTitle.textContent = "Pagamento confirmado.";
-        $statusText.textContent = "Seu download está liberado. Se quiser baixar depois, salve este link.";
-        $downloadBtn.href = downloadUrl;
-        $downloadBtn.style.display = "inline-flex";
-        $retryBtn.style.display = "none";
-        }
-        function showWaiting() {
-        $statusTitle.textContent = "Confirmando…";
-        $statusText.textContent = "Aguarde alguns segundos. Estamos consultando o status do pagamento.";
-        $downloadBtn.style.display = "none";
-        $retryBtn.style.display = "none";
-        }
-        function showError(message) {
-        $statusTitle.textContent = "Não consegui confirmar agora.";
-        $statusText.textContent = message;
-        $downloadBtn.style.display = "none";
-        $retryBtn.style.display = "inline-flex";
-        $retryBtn.onclick = (e) => { e.preventDefault(); startPolling(true); };
-        }
-        function startPolling(reset=false) {
-        if (reset) { tries = 0; }
-        if (timer) { clearTimeout(timer); }
-
-        showWaiting();
-        poll();
-        }
-        async function poll() {
-        tries += 1;
-        try {
-            const data = await checkPaymentOnce();
-            if (data && data.paid && data.download_url) {
-            showPaid(data.download_url);
+        async function main() {
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
+            const sid = getSid();
+            if (!sid) {
+            if (elMainTitle) elMainTitle.textContent = "Erro";
+            if (elSubtitle) elSubtitle.textContent = "Não foi possível identificar o pedido.";
+            setTitle("Erro");
+            setText("Identificador de pedido ausente.");
             return;
             }
-            showWaiting();
-            if (tries < 24) {
-            timer = setTimeout(poll, 2500);
-            } else {
-            showError("Se você já pagou, clique em “Tentar novamente”. Se continuar, me chame no WhatsApp.");
+            // INÍCIO DO POLL //
+            if (elMainTitle) elMainTitle.textContent = "Verificando pagamento...";
+            if (elSubtitle) elSubtitle.textContent = "Aguarde alguns instantes.";
+            setTitle("Confirmando...");
+            setText("Estamos verificando seu pagamento.");
+            const res = await pollStatus(sid);
+            // PAID COM LINK, LIBERAÇÃO IMEDIATA //
+            if (res.state === "paid" && res.download_url) {
+            if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
+            if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
+            setTitle("Pagamento confirmado");
+            setText("Seu pagamento foi aprovado com segurança. O download já está disponível.");
+            bindDownloadButton(res.download_url);
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+            return;
             }
-        } catch (err) {
-            showError("Pode ser um bloqueio de segurança do navegador (CORS) ou instabilidade. Clique em “Tentar novamente”.");
-            console.error(err);
+            // PAID SEM LINK, AGUARDANDO LIBERAÇÃO MANUAL (CASO RARO) //
+            if (res.state === "paid" && !res.download_url) {
+            if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
+            if (elSubtitle) elSubtitle.textContent = "Estamos preparando seu link…";
+            setTitle("Pagamento confirmado");
+            setText("Seu pagamento foi aprovado, mas não conseguimos carregar o link automaticamente agora. Chame no WhatsApp que eu libero pra você rapidinho.");
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "flex";
+            return;
+            }
+            // PAGAMENTO FAILED //
+            if (res.state === "failed") {
+            if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
+            if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
+            setTitle("Pagamento não confirmado");
+            setText("O pagamento não foi aprovado. Você pode tentar novamente ou chamar no WhatsApp.");
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
+            return;
+            }
+            // === PENDING/TIMEOUT ===
+            if (elMainTitle) elMainTitle.textContent = "Confirmando pagamento...";
+            if (elSubtitle) elSubtitle.textContent = "Estamos verificando sua transação.";
+            setTitle("Confirmando...");
+            setText("Se você pagou via PIX, pode levar alguns instantes. Atualize a página em breve.");
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
         }
-        }
+        document.addEventListener("DOMContentLoaded", main);
+        })();
     </script>
 </body>
 </html>
