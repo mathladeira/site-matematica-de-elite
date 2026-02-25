@@ -67,7 +67,6 @@
     <!-- SCRIPT QUE CHAMA O BACKEND -->
     <script>
         (() => {
-
         const yearEl = document.getElementById("year");
         const elMainTitle = document.getElementById("MainTitle");
         const elSubtitle = document.getElementById("subtitle");
@@ -96,8 +95,16 @@
         }
 
         async function checkOnce(sid) {
-            const url = `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}`;
-            const resp = await fetch(url, { method: "GET", cache: "no-store" });
+            // ✅ Anti-cache REAL: timestamp na URL
+            const url =
+            `${BACKEND_BASE}/pay/result?sid=${encodeURIComponent(sid)}` +
+            `&_=${Date.now()}`;
+
+            const resp = await fetch(url, {
+            method: "GET",
+            cache: "no-store",
+            headers: { "Accept": "application/json" }
+            });
 
             if (!resp.ok) {
             const txt = await resp.text();
@@ -109,28 +116,37 @@
             return data;
         }
 
-        async function pollStatus(sid, { intervalMs = 2000, timeoutMs = 120000 } = {}) {
+        async function pollStatus(
+            sid,
+            { intervalMs = 2000, timeoutMs = 90000 } = {} // 90s
+        ) {
             const t0 = Date.now();
+            let sawPaidWithoutLink = false;
 
             while (Date.now() - t0 < timeoutMs) {
-
             try {
                 const data = await checkOnce(sid);
 
-                // Se falhou, encerra
+                // FAILED encerra
                 if (data.state === "failed") return data;
 
-                // Só encerra como paid se vier com link
+                // PAID só encerra se vier link
                 if (data.state === "paid") {
-                if (data.download_url) return data;
+                const link =
+                    data.download_url || data.downloadUrl || null;
 
-                // Pagou mas ainda não veio link → continua esperando
-                setTitle("Pagamento confirmado");
-                setText("Seu pagamento foi aprovado. Estamos preparando seu link de download…");
+                if (link) {
+                    data.download_url = link; // normaliza
+                    return data;
                 }
 
+                // Pagou, mas ainda sem link -> continua esperando
+                sawPaidWithoutLink = true;
+                setTitle("Pagamento confirmado");
+                setText("Seu pagamento foi aprovado. Estamos preparando seu link de download…");
+                // não retorna aqui
+                } else {
                 // Pending normal
-                if (data.state === "pending") {
                 setTitle(data.title || "Confirmando...");
                 setText(data.message || "Estamos verificando o pagamento.");
                 }
@@ -143,15 +159,18 @@
             await new Promise(r => setTimeout(r, intervalMs));
             }
 
-            return { state: "timeout" };
+            // Timeout: se em algum momento vimos PAID sem link, não chama isso de "expirado".
+            if (sawPaidWithoutLink) {
+            return { state: "paid", download_url: null, timeout: true };
+            }
+
+            return { state: "pending", timeout: true };
         }
 
         async function main() {
-
             if (yearEl) yearEl.textContent = new Date().getFullYear();
 
             const sid = getSid();
-
             if (!sid) {
             if (elMainTitle) elMainTitle.textContent = "Erro";
             if (elSubtitle) elSubtitle.textContent = "Não foi possível identificar o pedido.";
@@ -160,19 +179,16 @@
             return;
             }
 
+            // Estado inicial
             if (elMainTitle) elMainTitle.textContent = "Verificando pagamento...";
             if (elSubtitle) elSubtitle.textContent = "Aguarde alguns instantes.";
-
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
 
             const res = await pollStatus(sid);
 
-            // =========================
-            // PAGO COM LINK
-            // =========================
+            // === PAID COM LINK ===
             if (res.state === "paid" && res.download_url) {
-
             if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
             if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
 
@@ -189,15 +205,25 @@
 
             if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
             if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
-
             return;
             }
 
-            // =========================
-            // FALHA
-            // =========================
-            if (res.state === "failed") {
+            // === PAID SEM LINK (NÃO CHAMAR DE EXPIRADO) ===
+            if (res.state === "paid" && !res.download_url) {
+            if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
+            if (elSubtitle) elSubtitle.textContent = "Estamos preparando seu link…";
 
+            setTitle("Pagamento confirmado");
+            setText("Seu pagamento foi aprovado, mas não conseguimos carregar o link automaticamente agora. Chame no WhatsApp que eu libero pra você rapidinho.");
+
+            if (elBtnDownload) elBtnDownload.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "none";
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "flex";
+            return;
+            }
+
+            // === FAILED ===
+            if (res.state === "failed") {
             if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
             if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
 
@@ -207,27 +233,22 @@
             if (elBtnDownload) elBtnDownload.style.display = "none";
             if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
             if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
-
             return;
             }
 
-            // =========================
-            // TIMEOUT (caso raro)
-            // =========================
-            if (elMainTitle) elMainTitle.textContent = "Não foi possível carregar o link";
-            if (elSubtitle) elSubtitle.textContent = "Seu pagamento pode estar aprovado.";
+            // === PENDING/TIMEOUT ===
+            if (elMainTitle) elMainTitle.textContent = "Confirmando pagamento...";
+            if (elSubtitle) elSubtitle.textContent = "Estamos verificando sua transação.";
 
-            setTitle("Precisamos de um passo a mais");
-            setText("Não conseguimos gerar o link automaticamente agora. Chame no WhatsApp que resolvemos para você.");
+            setTitle("Confirmando...");
+            setText("Se você pagou via PIX, pode levar alguns instantes. Atualize a página em breve.");
 
             if (elBtnDownload) elBtnDownload.style.display = "none";
-            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "none";
-            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "flex";
-
+            if (elWhatsAppPrimary) elWhatsAppPrimary.style.display = "none";
+            if (elWhatsAppDefault) elWhatsAppDefault.style.display = "flex";
         }
 
         document.addEventListener("DOMContentLoaded", main);
-
         })();
     </script>
 </body>
