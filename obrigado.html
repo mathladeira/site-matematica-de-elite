@@ -131,10 +131,26 @@
             setTitle("Confirmando...");
             setText("Estamos verificando seu pagamento.");
             const res = await pollStatus(sid);
+            // Evita falso "Link expirado": confirma 2x antes
+            let finalRes = res;
+            if (finalRes.state === "paid" && !finalRes.download_url) {
+            // espera 1.5s e consulta de novo (sem renew)
+            await new Promise(r => setTimeout(r, 1500));
+            try {
+                const again = await checkOnce(sid);
+                if (again && again.download_url) {
+                finalRes = again;
+                } else {
+                finalRes = again || finalRes;
+                }
+            } catch (e) {
+                console.warn("[RECHECK ERROR]", e);
+            }
+            }
             // === PAID ===
-            if (res.state === "paid") {
+            if (finalRes.state === "paid") {
             // 🔵 Token válido: download liberado
-            if (res.download_url) {
+            if (finalRes.download_url) {
                 if (elMainTitle) elMainTitle.textContent = "Pagamento confirmado";
                 if (elSubtitle) elSubtitle.textContent = "Seu acesso está liberado.";
                 setTitle("Pagamento confirmado");
@@ -142,7 +158,7 @@
                 if (elBtnDownload) {
                 elBtnDownload.style.display = "flex";
                 elBtnDownload.textContent = "Baixar material";
-                elBtnDownload.href = res.download_url;
+                elBtnDownload.href = finalRes.download_url;
                 elBtnDownload.target = "_blank";
                 elBtnDownload.rel = "noopener";
                 }
@@ -161,7 +177,7 @@
             return;
             }
             // === FAILED ===
-            if (res.state === "failed") {
+            if (finalRes.state === "failed") {
             if (elMainTitle) elMainTitle.textContent = "Pagamento não confirmado";
             if (elSubtitle) elSubtitle.textContent = "Não identificamos pagamento aprovado.";
             setTitle("Pagamento não confirmado");
